@@ -1,0 +1,15 @@
+{
+  "name": "@workspace/auth",
+  "version": "0.0.1",
+  "dependencies": {
+    "better-auth": "^1.6.14",
+    "pg": "^8.21.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.20.0"
+  },
+  "exports": {
+    "./server": "./src/server.ts",
+    "./client": "./src/client.ts"
+  }
+}
