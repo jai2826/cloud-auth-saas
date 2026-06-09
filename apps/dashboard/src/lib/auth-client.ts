@@ -1,5 +1,6 @@
-import { createClient } from "@workspace/auth/client";
+// apps/dashboard/src/lib/auth-client.ts
 
-export const authClient = createClient(
-  process.env.NEXT_PUBLIC_APP_URL ?? ""
-);
+import { createAuthClient } from "@workspace/auth/client";
+
+
+export const authClient = createAuthClient;

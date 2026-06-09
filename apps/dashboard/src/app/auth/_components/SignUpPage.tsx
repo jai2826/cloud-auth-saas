@@ -1,11 +1,14 @@
 "use client"
 
-import { ArrowLeft, ArrowRight, Mail, Shield, UserCheck } from "lucide-react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { ArrowRight, Eye, EyeOff, Lock, Mail, Shield, User } from "lucide-react"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 
+import { authClient } from "@/lib/auth-client"
 import { Button } from "@workspace/ui/components/button"
 import {
   Card,
@@ -14,138 +17,123 @@ import {
   CardHeader,
   CardTitle,
 } from "@workspace/ui/components/card"
-import { Input } from "@workspace/ui/components/input"
 import { Field, FieldError, FieldLabel } from "@workspace/ui/components/field"
-import { createClient } from "@workspace/auth/client"
-import { useRouter } from "next/navigation"
+import { Input } from "@workspace/ui/components/input"
 
-const authClient = createClient(
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000"
-)
-// 1. Zod Schema
-const authSchema = z.object({
-  email: z.email({ message: "Please enter a valid email address." }),
+const signUpSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
   password: z
     .string()
-    .min(6, { message: "Password must be at least 6 characters." }),
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+    .min(8, { message: "Password must be at least 8 characters." })
+    .regex(/[A-Z]/, { message: "Must contain at least one uppercase letter." })
+    .regex(/[0-9]/, { message: "Must contain at least one number." }),
 })
 
-type AuthFormValues = z.infer<typeof authSchema>
+type SignUpValues = z.infer<typeof signUpSchema>
 
 export default function SignUpPage() {
   const [apiError, setApiError] = useState("")
   const router = useRouter()
-  // 2. Native hook initialization
-  const form = useForm<AuthFormValues>({
-    resolver: zodResolver(authSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      name: "",
-    },
+  const [showPassword, setShowPassword] = useState(false)
+
+  const form = useForm<SignUpValues>({
+    resolver: zodResolver(signUpSchema),
+    mode: "onChange",
+    defaultValues: { name: "", email: "", password: "" },
   })
 
-  // 3. Type-safe submit
-  const onSubmit = async (values: AuthFormValues) => {
-    console.log("✅ ZOD PASSED! Firing API Request with payload:", values)
+  const onSubmit = async (values: SignUpValues) => {
     setApiError("")
-
     try {
       const { error } = await authClient.signUp.email({
+        name: values.name,
         email: values.email,
         password: values.password,
-        name: values.name || values.email.split("@")[0]!,
       })
-
-      if (error) setApiError(error.message as string)
-      else {
-        router.push("/dashboard")
+      if (error) {
+        setApiError(error.message ?? "Failed to create account.")
+      } else {
+        router.push("/projects")
       }
-    } catch (err: any) {
-      setApiError("Network failure to Edge API.")
+    } catch {
+      setApiError("Network error. Please try again.")
     }
   }
 
-  return (
-    <div
-      id="auth_container"
-      className="relative w-full h-full max-w-8xl flex min-h-screen flex-col justify-center overflow-hidden bg-[#09090b] font-sans text-zinc-100"
-    >
-      <div className="absolute top-6 left-6">
-        <button
-          id="btn_back_marketing"
-          onClick={() => router.push("/")}
-          className="flex cursor-pointer items-center space-x-2 rounded border border-zinc-800 bg-zinc-900 px-3 py-1.5 font-mono text-xs text-zinc-400 transition-colors hover:text-white"
-        >
-          <ArrowLeft className="h-3 w-3" />
-          <span>Exit to Landing</span>
-        </button>
-      </div>
+  const password = form.watch("password")
+  const passwordStrength = (() => {
+    if (!password) return null
+    let score = 0
+    if (password.length >= 8) score++
+    if (/[A-Z]/.test(password)) score++
+    if (/[0-9]/.test(password)) score++
+    if (/[^A-Za-z0-9]/.test(password)) score++
+    if (score <= 1)
+      return { label: "Weak", color: "bg-red-500", width: "w-1/4" }
+    if (score === 2)
+      return { label: "Fair", color: "bg-amber-500", width: "w-2/4" }
+    if (score === 3)
+      return { label: "Good", color: "bg-indigo-500", width: "w-3/4" }
+    return { label: "Strong", color: "bg-emerald-500", width: "w-full" }
+  })()
 
-      <div className="relative z-10 px-4 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="mb-6 flex justify-center">
-          <div className="rounded border border-indigo-500/20 bg-indigo-600/10 p-2.5 shadow-[0_0_15px_rgba(79,70,229,0.1)]">
-            <Shield className="h-5 w-5 text-indigo-400" />
+  return (
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="w-full max-w-120 space-y-6">
+        {/* Logo */}
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600 shadow-sm">
+            <Shield className="h-6 w-6 text-white" />
+          </div>
+          <div className="text-center">
+            <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
+              Create your account
+            </h1>
+            <p className="mt-0.5 text-xl text-zinc-500">
+              Start managing your FGA policies and auth engine
+            </p>
           </div>
         </div>
 
-        <h2 className="mb-2 text-center font-sans text-xl font-bold tracking-tight text-white">
-          "Create Developer Account"
-          {/* "Access FGA Management Console"} */}
-        </h2>
-        <p className="mb-8 text-center font-mono text-xs text-zinc-400">
-          "Define secure relation tuples at edge velocity."
-          {/* "Provide credentials to retrieve active workspace schema."} */}
-        </p>
-
-        <Card className="border-zinc-800 bg-zinc-900 shadow-2xl">
-          <CardHeader className="space-y-2 text-center">
-            <CardTitle className="text-white">
-              Create your account
-              {/* "Welcome back" */}
+        {/* Card */}
+        <Card className="rounded-xl border border-zinc-200 px-2 py-4 bg-white shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-2xl font-semibold text-zinc-900">
+              Get started
             </CardTitle>
-            <CardDescription className="text-zinc-400">
-              Provision a workspace identity.
-              {/* "Enter your workspace credentials." */}
+            <CardDescription className="text-lg text-zinc-500">
+              Create your workspace in seconds
             </CardDescription>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="space-y-4">
             {apiError && (
-              <div className="mb-4 rounded border border-rose-500/20 bg-rose-950/20 p-3 font-mono text-xs text-rose-400">
+              <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-[12px] text-red-600">
                 {apiError}
               </div>
             )}
 
-            {/* 4. Native Form Integration */}
-            <form
-              onSubmit={form.handleSubmit(onSubmit, (errors) =>
-                console.log("❌ ZOD BLOCKED SUBMIT:", errors)
-              )}
-              className="space-y-5"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <Controller
                 name="name"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel
-                      className="mb-1.5 block text-[10px] font-bold tracking-wider text-zinc-500 uppercase"
                       htmlFor={field.name}
+                      className="mb-1.5 block font-medium text-zinc-700"
                     >
-                      Name
+                      Full name
                     </FieldLabel>
                     <div className="relative">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-500">
-                        <Mail className="h-3.5 w-3.5" />
-                      </div>
+                      <User className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
                       <Input
                         {...field}
                         id={field.name}
-                        placeholder="e.g. Jane Doe"
+                        placeholder="Jane Smith"
                         aria-invalid={fieldState.invalid}
-                        className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-2 pl-10 font-mono text-xs text-white placeholder-zinc-700 outline-none focus:border-indigo-500"
+                        className="h-9 rounded-lg border-zinc-200 bg-white pl-9 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-indigo-500/20"
                       />
                     </div>
                     {fieldState.invalid && (
@@ -161,21 +149,20 @@ export default function SignUpPage() {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel
-                      className="mb-1.5 block text-[10px] font-bold tracking-wider text-zinc-500 uppercase"
                       htmlFor={field.name}
+                      className="mb-1.5 block font-medium text-zinc-700"
                     >
-                      Workspace Identity Email
+                      Email address
                     </FieldLabel>
                     <div className="relative">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-500">
-                        <Mail className="h-3.5 w-3.5" />
-                      </div>
+                      <Mail className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
                       <Input
                         {...field}
                         id={field.name}
+                        type="email"
+                        placeholder="you@company.com"
                         aria-invalid={fieldState.invalid}
-                        placeholder="e.g. dev.evaluator@company.io"
-                        className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-2 pl-10 font-mono text-xs text-white placeholder-zinc-700 outline-none focus:border-indigo-500"
+                        className="h-9 rounded-lg border-zinc-200 bg-white pl-9 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-indigo-500/20"
                       />
                     </div>
                     {fieldState.invalid && (
@@ -184,30 +171,48 @@ export default function SignUpPage() {
                   </Field>
                 )}
               />
+
               <Controller
                 name="password"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel
-                      className="mb-1.5 block text-[10px] font-bold tracking-wider text-zinc-500 uppercase"
                       htmlFor={field.name}
+                      className="mb-1.5 block font-medium text-zinc-700"
                     >
-                      Secret Passkey
+                      Password
                     </FieldLabel>
                     <div className="relative">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-500">
-                        <Mail className="h-3.5 w-3.5" />
-                      </div>
+                      <Lock className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
                       <Input
                         {...field}
                         id={field.name}
-                        type="password"
-                        placeholder="e.g. testpassword123@"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="••••••••"
                         aria-invalid={fieldState.invalid}
-                        className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-2 pl-10 font-mono text-xs text-white placeholder-zinc-700 outline-none focus:border-indigo-500"
+                        className="h-9 rounded-lg border-zinc-200 bg-white pl-9 text-[13px] text-zinc-900 focus:border-indigo-500 focus:ring-indigo-500/20"
                       />
+                      <Button
+                        variant="ghost"
+                        className="absolute top-1/3 right-3 h-3.5 w-3.5 cursor-pointer text-zinc-400"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff /> : <Eye />}
+                      </Button>
                     </div>
+                    {passwordStrength && (
+                      <div className="mt-2 space-y-1">
+                        <div className="h-1 w-full overflow-hidden rounded-full bg-zinc-100">
+                          <div
+                            className={`h-full rounded-full transition-all duration-200 ${passwordStrength.color} ${passwordStrength.width}`}
+                          />
+                        </div>
+                        <p className="text-[12px] text-zinc-400">
+                          {passwordStrength.label}
+                        </p>
+                      </div>
+                    )}
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -216,61 +221,70 @@ export default function SignUpPage() {
               />
 
               <Button
-                id="btn_auth_submit"
                 type="submit"
                 disabled={form.formState.isSubmitting}
-                className="flex w-full cursor-pointer items-center justify-center space-x-1.5 rounded bg-zinc-100 py-2.5 text-xs font-semibold text-zinc-950 transition-all hover:bg-white disabled:opacity-50"
+                className="mt-2 flex h-9 w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 text-[16px] font-medium text-white transition-colors duration-150 hover:bg-indigo-700"
               >
                 {form.formState.isSubmitting ? (
-                  <span>Retrieving Workspace...</span>
+                  <>
+                    <svg
+                      className="h-3.5 w-3.5 animate-spin"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                      />
+                    </svg>
+                    <span>Creating account...</span>
+                  </>
                 ) : (
                   <>
-                    <span>Initialize Account</span>
+                    <span>Create account</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </>
                 )}
               </Button>
             </form>
-
-            <div className="relative my-6">
-              <div
-                className="absolute inset-0 flex items-center"
-                aria-hidden="true"
-              >
-                <div className="w-full border-t border-zinc-800"></div>
-              </div>
-              <div className="relative flex justify-center text-xs">
-                <span className="rounded-full border border-zinc-800 bg-zinc-900 px-3 py-0.5 font-mono text-[10px] text-zinc-500">
-                  OR TEST INSTANTLY
-                </span>
-              </div>
-            </div>
-
-            <Button
-              id="btn_bypass_auth_demo"
-              // onClick={handleDemoLogin}
-              type="button"
-              className="flex w-full cursor-pointer items-center justify-center space-x-2 rounded border border-indigo-500/20 bg-zinc-950 py-2.5 font-mono text-xs text-indigo-400 transition-all hover:border-indigo-500/40 hover:bg-zinc-950/70"
-            >
-              <UserCheck className="h-4 w-4 text-indigo-400" />
-              <span>Launch Sandbox (Demo Mode)</span>
-            </Button>
-
-            <div className="mt-6 text-center">
-              <button
-                id="btn_toggle_auth_mode"
-                onClick={() => {
-                  setApiError("")
-                  router.push("/auth/signin")
-                }}
-                type="button"
-                className="cursor-pointer font-mono text-xs text-indigo-400 underline hover:text-indigo-300"
-              >
-                Already have an enterprise key? Sign in
-              </button>
-            </div>
           </CardContent>
         </Card>
+
+        <p className="text-center text-[14px] text-zinc-500">
+          Already have an account?{" "}
+          <Link
+            href="/auth/sign-in"
+            className="font-medium text-indigo-600 transition-colors hover:text-indigo-500"
+          >
+            Sign in
+          </Link>
+        </p>
+
+        <p className="text-center text-[12px] text-zinc-400">
+          By creating an account you agree to our{" "}
+          <Link
+            href="/terms"
+            className="underline underline-offset-2 transition-colors hover:text-zinc-600"
+          >
+            Terms
+          </Link>{" "}
+          and{" "}
+          <Link
+            href="/privacy"
+            className="underline underline-offset-2 transition-colors hover:text-zinc-600"
+          >
+            Privacy Policy
+          </Link>
+        </p>
       </div>
     </div>
   )

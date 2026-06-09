@@ -1,43 +1,26 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import {
-  ArrowRight,
-  Info,
-  LogOut,
-  Plus,
-  RefreshCw,
-  Search,
-  Shield,
-  Sparkles,
-  Trash2,
-  X,
-} from "lucide-react"
-import { useEffect, useMemo, useState } from "react"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
 import { useStore } from "@nanostores/react"
-import { Badge } from "@workspace/ui/components/badge"
+import { createClient } from "@workspace/auth/client"
 import { Button } from "@workspace/ui/components/button"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@workspace/ui/components/card"
-import { Field, FieldError, FieldLabel } from "@workspace/ui/components/field"
 import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/sonner"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/ui/components/select"
-import { Separator } from "@workspace/ui/components/separator"
-import { Textarea } from "@workspace/ui/components/textarea"
-import { createClient } from "@workspace/auth/client"
+  Plus,
+  RefreshCw,
+  Sparkles,
+  Trash2
+} from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 import {
   deletePolicy,
   fetchPolicies,
@@ -45,7 +28,6 @@ import {
   simulateCheck,
 } from "../../../lib/api"
 import type { APIConfig, Policy, SimulationResult } from "../../../lib/types"
-import { toast } from "@workspace/ui/components/sonner"
 
 export const authClient = createClient(process.env.NEXT_PUBLIC_APP_URL!)
 
@@ -195,49 +177,8 @@ export default function DashboardPage() {
     }
   }
 
-  const handleSignOut = async () => {
-    await authClient.signOut()
-    window.location.href = "/auth/signin"
-  }
-
   return (
     <div className="relative min-h-screen w-full max-w-8xl bg-background text-foreground">
-      <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <div className="rounded-xl border border-primary/20 bg-primary/10 p-2 text-primary">
-              <Shield className="h-4 w-4" />
-            </div>
-            <div>
-              <div className="font-mono text-xs tracking-widest text-foreground uppercase">
-                PUREJOY // FGA
-              </div>
-              <div className="text-[11px] tracking-wider text-muted-foreground uppercase">
-                Identity: {session?.user?.email || "Verifying..."}
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant={tab === "policies" ? "default" : "ghost"}
-              onClick={() => setTab("policies")}
-            >
-              Policies
-            </Button>
-            <Button
-              variant={tab === "simulator" ? "default" : "ghost"}
-              onClick={() => setTab("simulator")}
-            >
-              Simulator
-            </Button>
-            <Separator orientation="vertical" className="mx-2 h-6" />
-            <Button variant="ghost" size="icon" onClick={handleSignOut}>
-              <LogOut className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </header>
-
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="mb-6 flex items-center justify-between border-b border-border pb-5">
           <div>

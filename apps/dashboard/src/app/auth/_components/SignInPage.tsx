@@ -1,12 +1,14 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowLeft, ArrowRight, Mail, Shield, UserCheck } from "lucide-react"
+import { ArrowRight, Eye, EyeOff, Lock, Mail, Shield } from "lucide-react"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import * as z from "zod"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 
-import { createClient } from "@workspace/auth/client"
+import { authClient } from "@/lib/auth-client"
 import { Button } from "@workspace/ui/components/button"
 import {
   Card,
@@ -17,126 +19,101 @@ import {
 } from "@workspace/ui/components/card"
 import { Field, FieldError, FieldLabel } from "@workspace/ui/components/field"
 import { Input } from "@workspace/ui/components/input"
-import { useRouter } from "next/navigation"
 
-const authClient = createClient(
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000"
-)
-// 1. Zod Schema
-const authSchema = z.object({
+const signInSchema = z.object({
   email: z.email({ message: "Please enter a valid email address." }),
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters." }),
 })
 
-type AuthFormValues = z.infer<typeof authSchema>
+type SignInValues = z.infer<typeof signInSchema>
 
 export default function SignInPage() {
   const [apiError, setApiError] = useState("")
   const router = useRouter()
-  // 2. Native hook initialization
-  const form = useForm<AuthFormValues>({
-    resolver: zodResolver(authSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+  const [showPassword, setShowPassword] = useState(false)
+
+  const form = useForm<SignInValues>({
+    resolver: zodResolver(signInSchema),
+    mode: "onChange",
+    defaultValues: { email: "", password: "" },
   })
 
-  // 3. Type-safe submit
-  const onSubmit = async (values: AuthFormValues) => {
-    console.log("✅ ZOD PASSED! Firing API Request with payload:", values)
+  const onSubmit = async (values: SignInValues) => {
     setApiError("")
-
     try {
       const { error } = await authClient.signIn.email({
         email: values.email,
         password: values.password,
       })
-
-      if (error) setApiError(error.message as string)
-      else {
-        window.location.href = "/dashboard"
+      if (error) {
+        setApiError(error.message ?? "Invalid credentials.")
+      } else {
+        router.push("/projects")
       }
-    } catch (err: any) {
-      setApiError("Network failure to Edge API.")
+    } catch {
+      setApiError("Network error. Please try again.")
     }
   }
 
   return (
-    <div
-      id="auth_container"
-      className="relative flex h-full min-h-screen w-full max-w-8xl flex-col justify-center overflow-hidden bg-[#09090b] font-sans text-zinc-100"
-    >
-      <div className="absolute top-6 left-6">
-        <button
-          id="btn_back_marketing"
-          onClick={() => router.push("/")}
-          className="flex cursor-pointer items-center space-x-2 rounded border border-zinc-800 bg-zinc-900 px-3 py-1.5 font-mono text-xs text-zinc-400 transition-colors hover:text-white"
-        >
-          <ArrowLeft className="h-3 w-3" />
-          <span>Exit to Landing</span>
-        </button>
-      </div>
-
-      <div className="relative z-10 px-4 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="mb-6 flex justify-center">
-          <div className="rounded border border-indigo-500/20 bg-indigo-600/10 p-2.5 shadow-[0_0_15px_rgba(79,70,229,0.1)]">
-            <Shield className="h-5 w-5 text-indigo-400" />
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="w-full max-w-120 space-y-6">
+        {/* Logo */}
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600 shadow-sm">
+            <Shield className="h-6 w-6 text-white" />
+          </div>
+          <div className="text-center">
+            <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
+              Sign in to CloudAuth
+            </h1>
+            <p className="mt-0.5 text-xl text-zinc-500">
+              Manage your FGA policies and auth engine
+            </p>
           </div>
         </div>
 
-        <h2 className="mb-2 text-center font-sans text-xl font-bold tracking-tight text-white">
-          Access FGA Management Console
-        </h2>
-        <p className="mb-8 text-center font-mono text-xs text-zinc-400">
-          Provide credentials to retrieve active workspace schema.
-        </p>
-
-        <Card className="border-zinc-800 bg-zinc-900 shadow-2xl">
-          <CardHeader className="space-y-2 text-center">
-            <CardTitle className="text-white">Welcome back</CardTitle>
-            <CardDescription className="text-zinc-400">
-              Enter your workspace credentials.
+        {/* Card */}
+        <Card className="rounded-xl border border-zinc-200 bg-white px-2 py-4 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-2xl font-semibold text-zinc-900">
+              Welcome back
+            </CardTitle>
+            <CardDescription className="text-lg text-zinc-500">
+              Enter your credentials to continue
             </CardDescription>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="space-y-4">
             {apiError && (
-              <div className="mb-4 rounded border border-rose-500/20 bg-rose-950/20 p-3 font-mono text-xs text-rose-400">
+              <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-red-600">
                 {apiError}
               </div>
             )}
 
-            {/* 4. Native Form Integration */}
-            <form
-              onSubmit={form.handleSubmit(onSubmit, (errors) =>
-                console.log("❌ ZOD BLOCKED SUBMIT:", errors)
-              )}
-              className="space-y-5"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <Controller
                 name="email"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel
-                      className="mb-1.5 block text-[10px] font-bold tracking-wider text-zinc-500 uppercase"
                       htmlFor={field.name}
+                      className="mb-1.5 block font-medium text-zinc-700"
                     >
-                      Workspace Identity Email
+                      Email address
                     </FieldLabel>
                     <div className="relative">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-500">
-                        <Mail className="h-3.5 w-3.5" />
-                      </div>
+                      <Mail className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
                       <Input
                         {...field}
                         id={field.name}
+                        type="email"
+                        placeholder="you@company.com"
                         aria-invalid={fieldState.invalid}
-                        placeholder="e.g. dev.evaluator@company.io"
-                        className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-2 pl-10 font-mono text-xs text-white placeholder-zinc-700 outline-none focus:border-indigo-500"
+                        className="h-9 rounded-lg border-zinc-200 bg-white pl-9 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-indigo-500/20"
                       />
                     </div>
                     {fieldState.invalid && (
@@ -145,29 +122,43 @@ export default function SignInPage() {
                   </Field>
                 )}
               />
+
               <Controller
                 name="password"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      className="mb-1.5 block text-[10px] font-bold tracking-wider text-zinc-500 uppercase"
-                      htmlFor={field.name}
-                    >
-                      Secret Passkey
-                    </FieldLabel>
+                    <div className="mb-1.5 flex items-center justify-between">
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="font-medium text-zinc-700"
+                      >
+                        Password
+                      </FieldLabel>
+                      <Link
+                        href="/auth/forgot-password"
+                        className="text-[13px] text-indigo-600 transition-colors hover:text-indigo-500"
+                      >
+                        Forgot password?
+                      </Link>
+                    </div>
                     <div className="relative">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-500">
-                        <Mail className="h-3.5 w-3.5" />
-                      </div>
+                      <Lock className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
                       <Input
                         {...field}
                         id={field.name}
-                        type="password"
-                        placeholder="e.g. testpassword123@"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="••••••••"
                         aria-invalid={fieldState.invalid}
-                        className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-2 pl-10 font-mono text-xs text-white placeholder-zinc-700 outline-none focus:border-indigo-500"
+                        className="h-9 rounded-lg border-zinc-200 bg-white pl-9 text-[13px] text-zinc-900 focus:border-indigo-500 focus:ring-indigo-500/20"
                       />
+                      <Button
+                        variant="ghost"
+                        className="cursor-pointer absolute top-1/3 right-3 h-3.5 w-3.5  text-zinc-400"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff /> : <Eye/>}
+                      </Button>
                     </div>
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -177,60 +168,54 @@ export default function SignInPage() {
               />
 
               <Button
-                id="btn_auth_submit"
                 type="submit"
                 disabled={form.formState.isSubmitting}
-                className="flex w-full cursor-pointer items-center justify-center space-x-1.5 rounded bg-zinc-100 py-2.5 text-xs font-semibold text-zinc-950 transition-all hover:bg-white disabled:opacity-50"
+                className="mt-2 flex h-9 w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 text-[16px] font-medium text-white transition-colors duration-150 hover:bg-indigo-700"
               >
                 {form.formState.isSubmitting ? (
-                  <span>Retrieving Workspace...</span>
+                  <>
+                  {/* NOTE: This is a loading spinner */}
+                    <svg
+                      className="h-3.5 w-3.5 animate-spin"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                      />
+                    </svg>
+                    <span>Signing in...</span>
+                  </>
                 ) : (
                   <>
-                    <span> Access Cloud Console</span>
+                    <span>Sign in</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </>
                 )}
               </Button>
             </form>
-
-            <div className="relative my-6">
-              <div
-                className="absolute inset-0 flex items-center"
-                aria-hidden="true"
-              >
-                <div className="w-full border-t border-zinc-800"></div>
-              </div>
-              <div className="relative flex justify-center text-xs">
-                <span className="rounded-full border border-zinc-800 bg-zinc-900 px-3 py-0.5 font-mono text-[10px] text-zinc-500">
-                  OR TEST INSTANTLY
-                </span>
-              </div>
-            </div>
-
-            <Button
-              id="btn_bypass_auth_demo"
-              type="button"
-              className="flex w-full cursor-pointer items-center justify-center space-x-2 rounded border border-indigo-500/20 bg-zinc-950 py-2.5 font-mono text-xs text-indigo-400 transition-all hover:border-indigo-500/40 hover:bg-zinc-950/70"
-            >
-              <UserCheck className="h-4 w-4 text-indigo-400" />
-              <span>Launch Sandbox (Demo Mode)</span>
-            </Button>
-
-            <div className="mt-6 text-center">
-              <button
-                id="btn_toggle_auth_mode"
-                onClick={() => {
-                  setApiError("")
-                  router.push("/auth/signup")
-                }}
-                type="button"
-                className="cursor-pointer font-mono text-xs text-indigo-400 underline hover:text-indigo-300"
-              >
-                Need workspace credentials? Sign up
-              </button>
-            </div>
           </CardContent>
         </Card>
+
+        <p className="text-center text-[14px] text-zinc-500">
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/auth/signup"
+            className="font-medium text-indigo-600 transition-colors hover:text-indigo-500"
+          >
+            Sign up for free
+          </Link>
+        </p>
       </div>
     </div>
   )

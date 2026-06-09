@@ -1,53 +1,53 @@
-
+import Logo from "@/components/Logo"
 import { Button } from "@workspace/ui/components/button"
-import { Shield } from "lucide-react"
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from "@workspace/ui/components/navigation-menu"
+import { cn } from "@workspace/ui/lib/utils"
 import Link from "next/link"
 
+const NAV_LINKS = [
+  { label: "Sign In", href: "/auth/sign-in" },
+  { label: "Launch Console", href: "/dashboard" },
+]
+
 const MarketingNavbar = () => {
- 
   return (
-    <header
-      id="marketing_header"
-      className="border-zinc-850 sticky top-0 z-50 border-b border-zinc-800 bg-[#09090b]/85 backdrop-blur-md"
-    >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-3">
-          <div className="rounded-xl border border-sky-400/20 bg-sky-400/10 p-2 text-sky-300">
-            <Shield className="h-4.5 w-4.5" />
-          </div>
-          <div>
-            <div className="text-sm font-semibold tracking-[0.24em] text-white">
-              PUREJOY // FGA
-            </div>
-            <div className="text-[11px] tracking-[0.2em] text-zinc-500 uppercase">
-              Authorization at edge speed
-            </div>
-          </div>
+    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-4">
+          <Logo />
+
+          <NavigationMenu className="hidden sm:flex sm:max-w-none sm:justify-end">
+            <NavigationMenuList className="flex-wrap justify-end gap-1">
+              {NAV_LINKS.map((item) => (
+                <NavigationMenuItem key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "inline-flex h-9 items-center justify-center rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button
-          nativeButton={false}
-          render={
-            <Link
-            href="/auth/signin"
-            className="font-mono text-xs text-zinc-400 hover:text-white"
-            >
-                Sign In
-              </Link>
-            }
+        <div className="grid gap-2 sm:hidden">
+          {NAV_LINKS.map((item) => (
+            <Button
+              key={item.href}
+              nativeButton={false}
+              variant="outline"
+              className="w-full justify-center"
+              render={<Link href={item.href}>{item.label}</Link>}
             />
-          <Button
-            nativeButton={false}
-            render={
-              <Link
-                href="/dashboard"
-                className="font-mono text-xs text-zinc-400 hover:text-white"
-              >
-                Launch Console
-              </Link>
-            }
-          />
+          ))}
         </div>
       </div>
     </header>
