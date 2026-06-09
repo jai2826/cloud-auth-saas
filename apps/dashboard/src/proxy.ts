@@ -21,20 +21,15 @@ export default async function proxy(request: NextRequest) {
     headers: request.headers,
   })
 
-  console.log("SESSION", session)
-  console.log("PATH", pathname)
-  console.log(request.cookies.getAll())
-  console.log(request.cookies.get("better-auth.session_token"))
-
   // Authenticated users should not access auth routes
   if (session && authRoutes.some((route) => pathname === route)) {
-    // if (session.session.activeOrganizationId)
-    //   return NextResponse.redirect(
-    //     new URL(
-    //       `/projects/${session.session.activeOrganizationId}/dashboard`,
-    //       request.url
-    //     )
-    //   )
+    if (session.session.activeOrganizationId)
+      return NextResponse.redirect(
+        new URL(
+          `/projects/${session.session.activeOrganizationId}/dashboard`,
+          request.url
+        )
+      )
     return NextResponse.redirect(new URL("/projects", request.url))
   }
 

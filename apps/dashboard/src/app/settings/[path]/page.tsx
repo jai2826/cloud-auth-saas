@@ -4,7 +4,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 import { headers } from "next/headers"
 import { notFound, redirect } from "next/navigation"
 
-import { Settings } from "@workspace/ui/components/auth/setting/settings"
+import { Settings } from "@workspace/ui/components/auth/settings/settings"
 
 import { getQueryClient } from "@/lib/query-client"
 import { auth } from "@workspace/auth/server"

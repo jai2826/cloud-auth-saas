@@ -4,8 +4,8 @@ import { useAuth } from "@better-auth-ui/react"
 import type { ComponentProps } from "react"
 
 import { cn } from "@workspace/ui/lib/utils"
-import { ChangeEmail } from "./change-email"
-import { UserProfile } from "./user-profile"
+import { ChangeEmail } from "./change-email.js"
+import { UserProfile } from "./user-profile.js"
 
 export type AccountSettingsProps = {
   className?: string

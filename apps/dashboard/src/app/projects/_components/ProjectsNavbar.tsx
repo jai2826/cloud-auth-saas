@@ -1,45 +1,46 @@
 "use client"
 
-import { useStore } from "@nanostores/react"
 import {
-    Bell,
-    Check,
-    ChevronDown,
-    ChevronsUpDown,
-    LayoutDashboard,
-    Loader2,
-    LogOut,
-    Plus,
-    Settings,
+  Bell,
+  Check,
+  ChevronDown,
+  ChevronsUpDown,
+  LayoutDashboard,
+  Loader2,
+  LogOut,
+  Plus,
+  Settings,
 } from "lucide-react"
 import Link from "next/link"
 import { useParams, usePathname, useRouter } from "next/navigation"
-import { useState } from "react"
+
 
 import Logo from "@/components/Logo"
 import { authClient } from "@/lib/auth-client"
 import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
 } from "@workspace/ui/components/avatar"
 import { Badge } from "@workspace/ui/components/badge"
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuRadioGroup,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
 import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuList,
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
 } from "@workspace/ui/components/navigation-menu"
 import { cn } from "@workspace/ui/lib/utils"
+import { useState } from "react"
+import { Project } from "@workspace/auth/server"
 
 const NAV_LINKS = [
   { label: "Dashboard", href: "dashboard", icon: LayoutDashboard },
@@ -52,12 +53,12 @@ export function ProjectsNavbar() {
   const router = useRouter()
   const slug = params?.slug as string | undefined
 
-  const session = useStore(authClient.useSession)
+  const session = authClient.useSession()
   const user = session.data?.user
   const [isSwitching, setIsSwitching] = useState(false)
 
-  const { data: projects } = useStore(authClient.useListOrganizations)
-  const { data: activeProject } = useStore(authClient.useActiveOrganization)
+  const { data: projects } = authClient.useListOrganizations()
+  const { data: activeProject } = authClient.useActiveOrganization()
   const [optimisticProject, setOptimisticProject] = useState<{
     name: string
     slug: string
@@ -144,7 +145,7 @@ export function ProjectsNavbar() {
                   <DropdownMenuLabel className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
                     Projects
                   </DropdownMenuLabel>
-                  {projects?.map((project) => (
+                  {projects?.map((project: Project) => (
                     <DropdownMenuItem
                       key={project.id}
                       onClick={() =>

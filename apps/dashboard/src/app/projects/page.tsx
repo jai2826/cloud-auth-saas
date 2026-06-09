@@ -15,9 +15,9 @@ export default async function ProjectsPage() {
     headers: await headers(),
   })
 
-  if (!projects?.length) {
-    redirect("/projects/new")
-  }
+  // if (!projects?.length) {
+  //   redirect("/projects")
+  // }
 
   return (
     <div className="space-y-6">

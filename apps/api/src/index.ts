@@ -21,8 +21,8 @@ app.use(
 
 
 
-// 1. Authentication Router
-app.route("/",authRouter)
+// DISABLED: Better Auth API routes are handled by the dashboard proxy middleware of Nextjs
+// app.route("/",authRouter)
 
 
 

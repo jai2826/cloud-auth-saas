@@ -1,11 +1,14 @@
 // packages/auth/src/client.ts
 import { createAuthClient as createBetterAuthClient } from "better-auth/react"
-import { organizationClient } from "better-auth/client/plugins"
+import { multiSessionClient, organizationClient } from "better-auth/client/plugins"
 import { apiKeyClient } from "@better-auth/api-key/client"
 
 export const createAuthClient = createBetterAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8787",
-  plugins: [organizationClient(), apiKeyClient()],
+  baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  plugins: [organizationClient(), apiKeyClient(), multiSessionClient()],
+  fetchOptions: {
+    credentials: "include",
+  },
 })
 
 export type SignIn = typeof createAuthClient.signIn

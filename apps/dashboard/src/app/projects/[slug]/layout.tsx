@@ -9,7 +9,7 @@ type ProjectsLayoutProps = {
 export default function ProjectsLayout({ children }: ProjectsLayoutProps) {
   return (
     <div className="min-h-screen w-full bg-background">
-      <ProjectsNavbar />
+      {/* <ProjectsNavbar /> */}
       <PageShell className="py-6 sm:py-8">{children}</PageShell>
     </div>
   )

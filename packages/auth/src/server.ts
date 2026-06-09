@@ -1,14 +1,12 @@
 // packages/auth/src/server.ts
-import { betterAuth } from "better-auth"
-import { organization } from "better-auth/plugins"
 import { apiKey } from "@better-auth/api-key"
+import { betterAuth } from "better-auth"
+import { multiSession, organization } from "better-auth/plugins"
 import { Pool } from "pg"
 
 export const auth = betterAuth({
-  trustedOrigins: [
-    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-    "http://localhost:3001",
-  ],
+  baseUrl: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  trustedOrigins: [process.env.NEXT_PUBLIC_APP_URL!, "http://localhost:3000"],
   secret: process.env.BETTER_AUTH_SECRET!,
   database: new Pool({
     connectionString: process.env.DATABASE_URL!,
@@ -23,13 +21,15 @@ export const auth = betterAuth({
     organization({
       allowUserToCreateOrganization: true,
     }),
-    apiKey({
-      references: "organization",
-    }),
+    apiKey({ configId: "organization", references: "organization" }),
+    multiSession()
   ],
+  user: {
+    deleteUser: {
+      enabled: true, // Required to allow authClient.deleteUser calls
+    },
+  },
 })
-
-
 
 export type Auth = typeof auth
 export type Session = Auth["$Infer"]["Session"]
