@@ -1,8 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google"
 
+import { Toaster } from "@workspace/ui/components/sonner"
 import "@workspace/ui/globals.css"
 import { cn } from "@workspace/ui/lib/utils"
-import { Toaster } from "@workspace/ui/components/sonner"
+import { Providers } from "@/components/providers"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -27,9 +28,12 @@ export default function RootLayout({
         geist.variable
       )}
     >
-      <body className="flex min-h-screen w-full flex-col items-center justify-center  font-sans dark:bg-black">
-        <Toaster/>
+      <body className="min-h-screen w-full bg-background font-sans text-foreground antialiased">
+        <Providers>
+
+        <Toaster />
         {children}
+        </Providers>
       </body>
     </html>
   )

@@ -1,11 +1,15 @@
-import { createAuthClient } from "better-auth/client"
-import { organizationClient } from "better-auth/client/plugins"
+// packages/auth/src/client.ts
+import { createAuthClient as createBetterAuthClient } from "better-auth/react"
+import { multiSessionClient, organizationClient } from "better-auth/client/plugins"
+import { apiKeyClient } from "@better-auth/api-key/client"
 
-export function createClient(baseURL: string) {
-  return createAuthClient({
-    baseURL,
-    plugins: [organizationClient()],
-  })
-}
+export const createAuthClient = createBetterAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  plugins: [organizationClient(), apiKeyClient(), multiSessionClient()],
+  fetchOptions: {
+    credentials: "include",
+  },
+})
 
-export type AuthClient = ReturnType<typeof createClient>
+export type SignIn = typeof createAuthClient.signIn
+export type SignOut = typeof createAuthClient.signOut

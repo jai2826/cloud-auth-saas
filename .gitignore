@@ -39,7 +39,7 @@ yarn-error.log*
 .dev.vars
 
 # Temporary files
-wrangler.json
+.wrangler/
 # vercel
 .vercel
 
