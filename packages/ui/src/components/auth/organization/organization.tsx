@@ -98,13 +98,13 @@ export function Organization({
     >
       <div className={cn(hideNav && "hidden")}>
         <TabsList aria-label={localization.settings.settings}>
-          <TabsTrigger value="settings" render={<Link href={
+          <TabsTrigger value="settings" nativeButton={false} render={<Link href={
                                   slug
                                     ? `${basePaths.organization}/${slug}/${organizationViewPaths.organization.settings}`
                                     : `${basePaths.organization}/${organizationViewPaths.organization.settings}`
                                 } className="gap-1" />}><SettingsIcon className="text-muted-foreground" />{localization.settings.settings}</TabsTrigger>
 
-          <TabsTrigger value="people" render={<Link href={
+          <TabsTrigger value="people" nativeButton={false} render={<Link href={
                                   slug
                                     ? `${basePaths.organization}/${slug}/${organizationViewPaths.organization.people}`
                                     : `${basePaths.organization}/${organizationViewPaths.organization.people}`

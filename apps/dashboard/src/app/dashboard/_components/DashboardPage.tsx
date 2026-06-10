@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useStore } from "@nanostores/react"
-import { createClient } from "@workspace/auth/client"
+// import { createClient } from "@workspace/auth/client"
 import { Button } from "@workspace/ui/components/button"
 import {
   Card,
@@ -11,7 +11,6 @@ import {
   CardTitle
 } from "@workspace/ui/components/card"
 import { Input } from "@workspace/ui/components/input"
-import { toast } from "@workspace/ui/components/sonner"
 import {
   Plus,
   RefreshCw,
@@ -29,7 +28,7 @@ import {
 } from "../../../lib/api"
 import type { APIConfig, Policy, SimulationResult } from "../../../lib/types"
 
-export const authClient = createClient(process.env.NEXT_PUBLIC_APP_URL!)
+// export const authClient = createClient(process.env.NEXT_PUBLIC_APP_URL!)
 
 type Tab = "policies" | "simulator"
 
@@ -53,7 +52,7 @@ const defaultConfig: APIConfig = {
 }
 
 export default function DashboardPage() {
-  const { data: session } = useStore(authClient.useSession)
+  // const { data: session } = useStore(authClient.useSession)
   const [tab, setTab] = useState<Tab>("policies")
   const [apiConfig] = useState<APIConfig>(defaultConfig)
   const [policies, setPolicies] = useState<Policy[]>([])
@@ -87,19 +86,19 @@ export default function DashboardPage() {
     setLoading(true)
     try {
       setPolicies(await fetchPolicies(apiConfig))
-      toast(
-        <div className="flex gap-2">
-          <Sparkles className="h-4 w-4 text-primary" />
-          <span>Policies loaded</span>
-        </div>
-      )
+      // toast(
+      //   <div className="flex gap-2">
+      //     <Sparkles className="h-4 w-4 text-primary" />
+      //     <span>Policies loaded</span>
+      //   </div>
+      // )
     } catch {
-      toast(
-        <div className="flex gap-2">
-          <Sparkles className="h-4 w-4 text-primary" />
-          <span>Could not load policies</span>
-        </div>
-      )
+      // toast(
+      //   <div className="flex gap-2">
+      //     <Sparkles className="h-4 w-4 text-primary" />
+      //     <span>Could not load policies</span>
+      //   </div>
+      // )
     } finally {
       setLoading(false)
     }
@@ -135,17 +134,17 @@ export default function DashboardPage() {
       await savePolicy({ ...values, conditions }, apiConfig)
       setCreateOpen(false)
       form.reset()
-      toast("Policy saved")
+      // toast("Policy saved")
       await reloadPolicies()
     } catch {
-      toast("Failed to save policy")
+      // toast("Failed to save policy")
     }
   }
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this policy?")) return
     await deletePolicy(id, apiConfig)
-    toast("Policy deleted")
+    // toast("Policy deleted")
     await reloadPolicies()
   }
 
@@ -171,7 +170,7 @@ export default function DashboardPage() {
         ...current,
         `❌ ${error.message || "Unknown error"}`,
       ])
-      toast("Simulation failed")
+      // toast("Simulation failed")
     } finally {
       setEvaluating(false)
     }

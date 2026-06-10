@@ -1,11 +1,9 @@
 {
   "extends": "@workspace/typescript-config/base.json",
-  "exclude": [
-    "node_modules",
-    ".next",
-    "dist",
-    "build"
-  ]
-  
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "disableSourceOfProjectReferenceRedirect": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules", ".next", "dist", ".turbo", ".wrangler"]
 }
-

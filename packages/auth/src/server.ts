@@ -22,7 +22,7 @@ export const auth = betterAuth({
       allowUserToCreateOrganization: true,
     }),
     apiKey({ configId: "organization", references: "organization" }),
-    multiSession()
+    multiSession(),
   ],
   user: {
     deleteUser: {

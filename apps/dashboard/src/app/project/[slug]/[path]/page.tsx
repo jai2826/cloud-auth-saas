@@ -1,47 +1,36 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 import { ensureSession, viewPaths } from "@workspace/ui/index"
 import { headers } from "next/headers"
-import { notFound, redirect } from "next/navigation"
-
 import { organizationPluginConfig } from "@/lib/configs/organization-plugin-config"
 import { getQueryClient } from "@/lib/query-client"
 import { auth } from "@workspace/auth/server"
-import { Settings } from "@workspace/ui/components/auth/settings/settings"
-
-const validSettingsPaths = [
-  ...Object.values(viewPaths.settings),
-  ...Object.values(
-    organizationPluginConfig().viewPaths.settings
-  ),
-]
-
-export default async function SettingsPage({
+import { Organization } from "@workspace/ui/components/auth/organization/organization"
+import { notFound, redirect } from "next/navigation"
+const validOrganizationPaths = Object.values(
+  organizationPluginConfig().viewPaths.organization
+)
+export default async function ProjectPage({
   params,
 }: {
-  params: Promise<{ path: string }>
+  params: Promise<{ slug: string; path: string }>
 }) {
-  const { path } = await params
-
-  if (!validSettingsPaths.includes(path)) {
+  const { slug, path } = await params
+  if (!validOrganizationPaths.includes(path)) {
     notFound()
   }
-
   const queryClient = getQueryClient()
-
   const session = await ensureSession(queryClient, auth, {
     headers: await headers(),
   })
-
   if (!session) {
     redirect(
-      `/auth/sign-in?redirectTo=${encodeURIComponent(`/settings/${path}`)}`
+      `/auth/sign-in?redirectTo=${encodeURIComponent(`/project/${slug}/${path}`)}`
     )
   }
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="mx-auto w-full max-w-3xl p-4 md:p-6">
-        <Settings path={path} />
+        <Organization path={path} />
       </div>
     </HydrationBoundary>
   )

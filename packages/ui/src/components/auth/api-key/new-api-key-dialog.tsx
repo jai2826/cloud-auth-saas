@@ -13,12 +13,12 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogMedia,
-  AlertDialogTitle
+  AlertDialogTitle,
 } from "@workspace/ui/components/alert-dialog"
 import {
   InputGroup,
   InputGroupButton,
-  InputGroupInput
+  InputGroupInput,
 } from "@workspace/ui/components/input-group"
 import { Label } from "@workspace/ui/components/label"
 import { apiKeyPlugin } from "@workspace/ui/lib/auth/api-key-plugin"
@@ -34,7 +34,7 @@ export function NewApiKeyDialog({
   open,
   onOpenChange,
   name,
-  secretKey
+  secretKey,
 }: NewApiKeyDialogProps) {
   const { localization } = useAuth()
   const { localization: apiKeyLocalization } = useAuthPlugin(apiKeyPlugin)
@@ -92,7 +92,8 @@ export function NewApiKeyDialog({
         </div>
 
         <AlertDialogFooter>
-          <AlertDialogAction>
+          {/* NOTE: Added OnClick handler */}
+          <AlertDialogAction onClick={() => onOpenChange(false)}>
             {apiKeyLocalization.dismissNewKey}
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -7,13 +7,13 @@ import {
   useAuthPlugin,
   useListOrganizations,
   useSession,
-  useSetActiveOrganization
+  useSetActiveOrganization,
 } from "@better-auth-ui/react"
 import type { Organization } from "better-auth/client"
 import {
   ChevronsUpDown,
   PlusCircle,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
 } from "lucide-react"
 import { type ReactNode, useState } from "react"
 
@@ -23,7 +23,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
 import { organizationPlugin } from "@workspace/ui/lib/auth/organization-plugin"
 import { cn } from "@workspace/ui/lib/utils"
@@ -57,7 +57,7 @@ export function OrganizationSwitcher({
   hideSettings,
   hideSlug = true,
   setActive,
-  trigger
+  trigger,
 }: OrganizationSwitcherProps) {
   const { authClient, navigate, basePaths, localization, viewPaths, Link } =
     useAuth()
@@ -65,7 +65,7 @@ export function OrganizationSwitcher({
   const {
     localization: organizationLocalization,
     viewPaths: organizationViewPaths,
-    slug
+    slug,
   } = useAuthPlugin(organizationPlugin)
 
   const { data: activeOrganization, isPending: activeOrganizationPending } =
@@ -102,7 +102,7 @@ export function OrganizationSwitcher({
       navigate({
         to: organization
           ? `${basePaths.organization}/${organization.slug}/${organizationViewPaths.organization.settings}`
-          : `${basePaths.settings}/${viewPaths.settings.account}`
+          : `${basePaths.settings}/${viewPaths.settings.account}`,
       })
     } else {
       setActiveOrganization({ organizationId: organization?.id ?? null })
@@ -115,25 +115,36 @@ export function OrganizationSwitcher({
         {trigger ? (
           <DropdownMenuTrigger>{trigger}</DropdownMenuTrigger>
         ) : (
-          <DropdownMenuTrigger render={<Button variant="ghost" className={cn("h-auto px-2 py-2 text-left", className)} disabled={!session || isPending} />}>{isPending ? (
-                                      <OrganizationView isPending hideRole hideSlug={hideSlug} />
-                                    ) : activeOrganization ? (
-                                      <OrganizationView hideRole hideSlug={hideSlug} />
-                                    ) : session && !hidePersonal ? (
-                                      <UserView hideSubtitle={hideSlug} />
-                                    ) : (
-                                      <OrganizationView
-                                        hideRole
-                                        hideSlug={hideSlug}
-                                        organization={{ name: organizationLocalization.organization }}
-                                      />
-                                    )}<ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" /></DropdownMenuTrigger>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="ghost"
+                className={cn("h-auto px-2 py-2 text-left", className)}
+                disabled={!session || isPending}
+              />
+            }
+          >
+            {isPending ? (
+              <OrganizationView isPending hideRole hideSlug={hideSlug} />
+            ) : activeOrganization ? (
+              <OrganizationView hideRole hideSlug={hideSlug} />
+            ) : session && !hidePersonal ? (
+              <UserView hideSubtitle={hideSlug} />
+            ) : (
+              <OrganizationView
+                hideRole
+                hideSlug={hideSlug}
+                organization={{ name: organizationLocalization.organization }}
+              />
+            )}
+            <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
+          </DropdownMenuTrigger>
         )}
 
         <DropdownMenuContent
           align={align}
           sideOffset={sideOffset}
-          className="min-w-64 max-w-svw"
+          className="max-w-svw min-w-64"
         >
           {activeOrganization ? (
             <div className="flex items-center justify-between gap-4 px-2 py-2">
@@ -144,11 +155,23 @@ export function OrganizationSwitcher({
               />
 
               {!hideSettings && (
-                <Button variant="outline" size="sm" render={<Link href={
-                                                    slug
-                                                      ? `${basePaths.organization}/${slug}/${organizationViewPaths.organization.settings}`
-                                                      : `${basePaths.organization}/${organizationViewPaths.organization.settings}`
-                                                  } />} nativeButton={false}><SettingsIcon className="text-muted-foreground" />{organizationLocalization.manage}</Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  render={
+                    <Link
+                      href={
+                        slug
+                          ? `${basePaths.organization}/${slug}/${organizationViewPaths.organization.settings}`
+                          : `${basePaths.organization}/${organizationViewPaths.organization.settings}`
+                      }
+                    />
+                  }
+                  nativeButton={false}
+                >
+                  <SettingsIcon className="text-muted-foreground" />
+                  {organizationLocalization.manage}
+                </Button>
               )}
             </div>
           ) : !isPending && session?.user && !hidePersonal ? (
@@ -156,7 +179,19 @@ export function OrganizationSwitcher({
               <UserView hideSubtitle={hideSlug} />
 
               {!hideSettings && (
-                <Button variant="outline" size="sm" render={<Link href={`${basePaths.settings}/${viewPaths.settings.account}`} />} nativeButton={false}><SettingsIcon className="text-muted-foreground" />{localization.settings.settings}</Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  render={
+                    <Link
+                      href={`${basePaths.settings}/${viewPaths.settings.account}`}
+                    />
+                  }
+                  nativeButton={false}
+                >
+                  <SettingsIcon className="text-muted-foreground" />
+                  {localization.settings.settings}
+                </Button>
               )}
             </div>
           ) : null}
@@ -164,7 +199,7 @@ export function OrganizationSwitcher({
           <DropdownMenuSeparator />
 
           {!!activeOrganization && !hidePersonal && (
-            <DropdownMenuItem onSelect={() => handleSetActive(null)}>
+            <DropdownMenuItem onClick={() => handleSetActive(null)}>
               <UserView hideSubtitle={hideSlug} />
             </DropdownMenuItem>
           )}
@@ -172,7 +207,7 @@ export function OrganizationSwitcher({
           {otherOrganizations.map((organization) => (
             <DropdownMenuItem
               key={organization.id}
-              onSelect={() => handleSetActive(organization)}
+              onClick={() => handleSetActive(organization)}
             >
               <OrganizationView
                 hideRole
@@ -187,7 +222,7 @@ export function OrganizationSwitcher({
               {hasOtherEntries && <DropdownMenuSeparator />}
 
               <DropdownMenuItem
-                onSelect={() => {
+                onClick={() => {
                   setDropdownOpen(false)
                   setCreateOpen(true)
                 }}

@@ -17,10 +17,10 @@ importers:
     dependencies:
       '@better-auth/passkey':
         specifier: ^1.6.15
-        version: 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))(nanostores@1.3.0)
+        version: 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))(nanostores@1.3.0)
       better-auth:
         specifier: ^1.6.15
-        version: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: 19.2.0
         version: 19.2.0
@@ -73,7 +73,7 @@ importers:
         version: 8.20.0
       better-auth:
         specifier: ^1.6.15
-        version: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -97,13 +97,13 @@ importers:
         version: link:../../packages/ui
       better-auth:
         specifier: ^1.6.14
-        version: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       lucide-react:
         specifier: ^1.17.0
         version: 1.17.0(react@19.2.0)
       next:
-        specifier: ^16.2.0
-        version: 16.2.7(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        specifier: ^16.2.9
+        version: 16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -167,10 +167,10 @@ importers:
     dependencies:
       '@better-auth/api-key':
         specifier: ^1.6.15
-        version: 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))
+        version: 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))
       better-auth:
         specifier: ^1.6.15
-        version: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       pg:
         specifier: ^8.21.0
         version: 8.21.0
@@ -230,13 +230,13 @@ importers:
         version: 1.5.0(@date-fns/tz@1.5.0)(@types/react@19.2.17)(date-fns@4.4.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@better-auth-ui/core':
         specifier: ^1.6.18
-        version: 1.6.18(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
+        version: 1.6.18(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       '@better-auth-ui/react':
         specifier: ^1.6.18
-        version: 1.6.18(127eeafa11a5e51e7d05e4de97c3a17a)
+        version: 1.6.18(d8745d19650e3dfdad61524a052766de)
       '@better-auth/api-key':
         specifier: ^1.6.15
-        version: 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))
+        version: 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))
       '@tanstack/react-pacer':
         specifier: ^0.22.1
         version: 0.22.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -245,7 +245,7 @@ importers:
         version: 5.101.0(react@19.2.0)
       better-auth:
         specifier: ^1.6.15
-        version: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       bowser:
         specifier: ^2.14.1
         version: 2.14.1
@@ -1428,60 +1428,60 @@ packages:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
 
-  '@next/env@16.2.7':
-    resolution: {integrity: sha512-tMJizPlj6ZYpBMMdK8S0LJufrP4QTdR6pcv9KQ/bVETPAmg0j1mlHE9G2c38UyGHxoBapgwuj7XjbGJ2RcDFOg==}
+  '@next/env@16.2.9':
+    resolution: {integrity: sha512-ki5VxxXfzD/9TDe13wyeTKIjQTAwBVpnr8KhRDUr8ltMUq1/NBpWNT5tiPoxiGl+PHM4X2ahSOiPk6iAimIzPg==}
 
   '@next/eslint-plugin-next@16.2.7':
     resolution: {integrity: sha512-VbS+QgMHqvIDMTIqD2xMBKK1otIpdAUKA8VLHFwR9h6OfU/mOm7w/69nQcvdmI8hCk99Wr2AsGLn/PJ/tMHw1w==}
 
-  '@next/swc-darwin-arm64@16.2.7':
-    resolution: {integrity: sha512-vm1EDI/pVaBNNiychmxk3fft+OhQPVD9cIM/tReLZIQ3TfQ4kqI9DwKk00dzuS1ulC7icbrzCFrmRRlk9PfNdw==}
+  '@next/swc-darwin-arm64@16.2.9':
+    resolution: {integrity: sha512-HkfxNYUCmcct0Xsqib5KxqMSHV4AHJq857BNRchyBDs4YS19aHzVfn1kDuBYKqLLQBjXgnkIsjV2Kd4d2wzYhw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@next/swc-darwin-x64@16.2.7':
-    resolution: {integrity: sha512-O3IRSv1ZBL1zs0WrIgefTEcTKFVn+ryxBNe54erJ6KsD+2f/Mmt7g2jOYh8PSBdUwPtKQJuCsTMlZ7tIu2AcsQ==}
+  '@next/swc-darwin-x64@16.2.9':
+    resolution: {integrity: sha512-7IAtK4MeybpqRV9GRABWEhJ62mOS+rzWOzOTFie4cSEtm12xsoOMJRcECoZx3FHPzFAqN/IJtHqWAFOLfl152w==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@next/swc-linux-arm64-gnu@16.2.7':
-    resolution: {integrity: sha512-Re6PZtjBDd0aMU+VcZcC/PrIvj4WhrjDYtMhhCVQamWN4L90EVP0pcEOBQD25prSlw7OzNw5QpHLWMilRLsRNw==}
+  '@next/swc-linux-arm64-gnu@16.2.9':
+    resolution: {integrity: sha512-hBD75iWpUtkL9SmQmcRhmLomn9jgkPzCEkbOcLgHymPEKzv+6ONy13RRiIEz/iEObjkS2Jlb5gYS2XGoS3X4rw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@next/swc-linux-arm64-musl@16.2.7':
-    resolution: {integrity: sha512-qyogG9QtBzWxgJfeGBvOEHI3851gTfCF3wLZ5RDLTBJGAmE9p1qDwKCOdrBrvBzRvYDT+gUDp72pzlSEfAXgNA==}
+  '@next/swc-linux-arm64-musl@16.2.9':
+    resolution: {integrity: sha512-qZTI3pf9SGc/obr8NkQAekBxmp1QK+kVm+VAf3BALLfFAj+1kUhkTxmrWpVos9R/UYIA8AWX2p6cGI5WdwzVUA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@next/swc-linux-x64-gnu@16.2.7':
-    resolution: {integrity: sha512-Vhe4ZDuBpmMogrGi5D4R2Kq4JAQlj6+wvgaFYy31zfES0zPmt6TLA+cuYpM/OLrPZjo2MYQTHVqNUSCR6+fDZQ==}
+  '@next/swc-linux-x64-gnu@16.2.9':
+    resolution: {integrity: sha512-xm0HfRNX+UkH4R3c18ynswjj5o5uEj/7iI9p9omdtTSIsRCzQqkGMA+10nzJ4EHnYC3as65IMhbbl5fWRUWHYg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@next/swc-linux-x64-musl@16.2.7':
-    resolution: {integrity: sha512-srvian89JahFLw1YLBEuhvPJ0DO5lpUeJQMXy4xYo7g628ZlNgXdNkqoxSAv9OYrBfByh6vxISMwW/mRbzCY+g==}
+  '@next/swc-linux-x64-musl@16.2.9':
+    resolution: {integrity: sha512-QumimHkGEG6vM3PfEDWKyKen03NcqLOkeKB1EfcPe7VxzmEiCa4jNnMyBn/US5zcd/VE1CI+O8Ovb3lfjVHfGw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@next/swc-win32-arm64-msvc@16.2.7':
-    resolution: {integrity: sha512-GX3wvLpULFuRFJzwHaKfm7QZJ18F4ZSuxlPJ96BoBglCzBmdSjyeBKF+ZhWhvL/ckxNfLnNa7bsObO2ipYpszw==}
+  '@next/swc-win32-arm64-msvc@16.2.9':
+    resolution: {integrity: sha512-hzQpKZvw8rAwI6A2uQh6SacCSvNAXaIkPNsWwzqqfRiIMiXMfH936skDhz1OO6KpvdKkJrgHHtqQOq5PIXOvdQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@next/swc-win32-x64-msvc@16.2.7':
-    resolution: {integrity: sha512-J4WlM72NMk076Qsg0jTdK3SNXatlSdnjW7L7oNGLst1tAGjHrJh/FYi+pw9wyIjEtGRKDNzD0zuiY16oWYWVaw==}
+  '@next/swc-win32-x64-msvc@16.2.9':
+    resolution: {integrity: sha512-qr2VL3Ce5QrwgO2yh1ujSBawrimjVKX8FGF/cOynmdYKJY0BdHpGVNIRK1tqONB10Vkm25Ub1BD2bkjWs4+96w==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -3936,8 +3936,8 @@ packages:
       react: 19.2.0
       react-dom: 19.2.0
 
-  next@16.2.7:
-    resolution: {integrity: sha512-eMJxgjRzBaj3olkP4cBamHDXL79A8FC6u1GcsO1D1Tsx8bw/LLXUJCaoajVxtnhD3A1IJqIT8IcRJjgBIPJq4w==}
+  next@16.2.9:
+    resolution: {integrity: sha512-MEOJiq/UvuezAdqVSceHbqDgZt1kDw2tpGVOlsdIoJsQdbN2JY2hpVG4xnXGkbdJUOEWhnRfiu/O4Hpc9Juwww==}
     engines: {node: '>=20.9.0'}
     hasBin: true
     peerDependencies:
@@ -5185,18 +5185,18 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.17
 
-  '@better-auth-ui/core@1.6.18(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
+  '@better-auth-ui/core@1.6.18(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
     dependencies:
-      better-auth: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      better-auth: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
 
-  '@better-auth-ui/react@1.6.18(127eeafa11a5e51e7d05e4de97c3a17a)':
+  '@better-auth-ui/react@1.6.18(d8745d19650e3dfdad61524a052766de)':
     dependencies:
-      '@better-auth-ui/core': 1.6.18(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
-      '@better-auth/api-key': 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))
-      '@better-auth/passkey': 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))(nanostores@1.3.0)
+      '@better-auth-ui/core': 1.6.18(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
+      '@better-auth/api-key': 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))
+      '@better-auth/passkey': 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))(nanostores@1.3.0)
       '@react-email/components': 1.0.12(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@tanstack/react-query': 5.101.0(react@19.2.0)
-      better-auth: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      better-auth: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       clsx: 2.1.1
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
@@ -5204,11 +5204,11 @@ snapshots:
       tailwindcss: 4.3.0
       zod: 4.4.3
 
-  '@better-auth/api-key@1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))':
+  '@better-auth/api-key@1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))':
     dependencies:
       '@better-auth/core': 1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0)
       '@better-auth/utils': 0.4.1
-      better-auth: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      better-auth: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       better-call: 1.3.5(zod@4.4.3)
       zod: 4.4.3
 
@@ -5248,14 +5248,14 @@ snapshots:
       '@better-auth/core': 1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0)
       '@better-auth/utils': 0.4.1
 
-  '@better-auth/passkey@1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))(nanostores@1.3.0)':
+  '@better-auth/passkey@1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.3.5(zod@4.4.3))(nanostores@1.3.0)':
     dependencies:
       '@better-auth/core': 1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0)
       '@better-auth/utils': 0.4.1
       '@better-fetch/fetch': 1.1.21
       '@simplewebauthn/browser': 13.3.0
       '@simplewebauthn/server': 13.3.1
-      better-auth: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      better-auth: 1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       better-call: 1.3.5(zod@4.4.3)
       nanostores: 1.3.0
       zod: 4.4.3
@@ -5874,34 +5874,34 @@ snapshots:
       '@tybys/wasm-util': 0.10.2
     optional: true
 
-  '@next/env@16.2.7': {}
+  '@next/env@16.2.9': {}
 
   '@next/eslint-plugin-next@16.2.7':
     dependencies:
       fast-glob: 3.3.1
 
-  '@next/swc-darwin-arm64@16.2.7':
+  '@next/swc-darwin-arm64@16.2.9':
     optional: true
 
-  '@next/swc-darwin-x64@16.2.7':
+  '@next/swc-darwin-x64@16.2.9':
     optional: true
 
-  '@next/swc-linux-arm64-gnu@16.2.7':
+  '@next/swc-linux-arm64-gnu@16.2.9':
     optional: true
 
-  '@next/swc-linux-arm64-musl@16.2.7':
+  '@next/swc-linux-arm64-musl@16.2.9':
     optional: true
 
-  '@next/swc-linux-x64-gnu@16.2.7':
+  '@next/swc-linux-x64-gnu@16.2.9':
     optional: true
 
-  '@next/swc-linux-x64-musl@16.2.7':
+  '@next/swc-linux-x64-musl@16.2.9':
     optional: true
 
-  '@next/swc-win32-arm64-msvc@16.2.7':
+  '@next/swc-win32-arm64-msvc@16.2.9':
     optional: true
 
-  '@next/swc-win32-x64-msvc@16.2.7':
+  '@next/swc-win32-x64-msvc@16.2.9':
     optional: true
 
   '@noble/ciphers@1.3.0': {}
@@ -6854,7 +6854,7 @@ snapshots:
 
   baseline-browser-mapping@2.10.34: {}
 
-  better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+  better-auth@1.6.15(@cloudflare/workers-types@4.20260609.1)(next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(pg@8.21.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
     dependencies:
       '@better-auth/core': 1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0)
       '@better-auth/drizzle-adapter': 1.6.15(@better-auth/core@1.6.15(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20260609.1)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.1)(nanostores@1.3.0))(@better-auth/utils@0.4.1)
@@ -6874,7 +6874,7 @@ snapshots:
       nanostores: 1.3.0
       zod: 4.4.3
     optionalDependencies:
-      next: 16.2.7(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      next: 16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       pg: 8.21.0
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
@@ -7410,8 +7410,8 @@ snapshots:
       '@next/eslint-plugin-next': 16.2.7
       eslint: 9.39.4(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
-      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.7.0))
+      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-react: 7.37.5(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-react-hooks: 7.1.1(eslint@9.39.4(jiti@2.7.0))
@@ -7437,7 +7437,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)):
+  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.3
@@ -7448,21 +7448,21 @@ snapshots:
       tinyglobby: 0.2.17
       unrs-resolver: 1.12.2
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
+      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0))
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.13.0(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)):
+  eslint-module-utils@2.13.0(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       eslint: 9.39.4(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.7.0))
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)):
+  eslint-plugin-import@2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -7473,7 +7473,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.39.4(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
-      eslint-module-utils: 2.13.0(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))
+      eslint-module-utils: 2.13.0(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.4(jiti@2.7.0))
       hasown: 2.0.4
       is-core-module: 2.16.2
       is-glob: 4.0.3
@@ -8347,9 +8347,9 @@ snapshots:
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
 
-  next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+  next@16.2.9(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
     dependencies:
-      '@next/env': 16.2.7
+      '@next/env': 16.2.9
       '@swc/helpers': 0.5.15
       baseline-browser-mapping: 2.10.34
       caniuse-lite: 1.0.30001797
@@ -8358,14 +8358,14 @@ snapshots:
       react-dom: 19.2.0(react@19.2.0)
       styled-jsx: 5.1.6(@babel/core@7.29.7)(react@19.2.0)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 16.2.7
-      '@next/swc-darwin-x64': 16.2.7
-      '@next/swc-linux-arm64-gnu': 16.2.7
-      '@next/swc-linux-arm64-musl': 16.2.7
-      '@next/swc-linux-x64-gnu': 16.2.7
-      '@next/swc-linux-x64-musl': 16.2.7
-      '@next/swc-win32-arm64-msvc': 16.2.7
-      '@next/swc-win32-x64-msvc': 16.2.7
+      '@next/swc-darwin-arm64': 16.2.9
+      '@next/swc-darwin-x64': 16.2.9
+      '@next/swc-linux-arm64-gnu': 16.2.9
+      '@next/swc-linux-arm64-musl': 16.2.9
+      '@next/swc-linux-x64-gnu': 16.2.9
+      '@next/swc-linux-x64-musl': 16.2.9
+      '@next/swc-win32-arm64-msvc': 16.2.9
+      '@next/swc-win32-x64-msvc': 16.2.9
       sharp: 0.34.5
     transitivePeerDependencies:
       - '@babel/core'
