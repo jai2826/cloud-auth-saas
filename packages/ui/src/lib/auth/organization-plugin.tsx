@@ -7,10 +7,11 @@ import {
 import { Briefcase } from "lucide-react"
 
 import { OrganizationsSettings } from "@workspace/ui/components/auth/organization/organizations-settings"
+import { AuthPlugin } from "@better-auth-ui/core"
 
 export const organizationPlugin = createAuthPlugin(
   coreOrganizationPlugin.id,
-  (options: OrganizationPluginOptions = {}) => {
+  (options: OrganizationPluginOptions = {}) :AuthPlugin => {
     const core = coreOrganizationPlugin(options)
 
     return {

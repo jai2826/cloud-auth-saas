@@ -4,7 +4,7 @@ import {
   type OrganizationAuthClient,
   useAuth,
   useAuthPlugin,
-  useDeleteOrganization
+  useDeleteOrganization,
 } from "@better-auth-ui/react"
 import type { Organization } from "better-auth/client"
 import { TriangleAlert } from "lucide-react"
@@ -19,7 +19,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogMedia,
-  AlertDialogTitle
+  AlertDialogTitle,
 } from "@workspace/ui/components/alert-dialog"
 import { Button } from "@workspace/ui/components/button"
 import { Card, CardContent } from "@workspace/ui/components/card"
@@ -36,26 +36,24 @@ export type DeleteOrganizationDialogProps = {
 export function DeleteOrganizationDialog({
   open,
   onOpenChange,
-  organization
+  organization,
 }: DeleteOrganizationDialogProps) {
-  const { authClient, basePaths, localization, navigate } = useAuth()
-  const {
-    localization: organizationLocalization,
-    viewPaths: organizationPluginViewPaths
-  } = useAuthPlugin(organizationPlugin)
+  const { authClient, localization, navigate } = useAuth()
+  const { localization: organizationLocalization } =
+    useAuthPlugin(organizationPlugin)
 
   const { mutate: deleteOrganization, isPending } = useDeleteOrganization(
     authClient as OrganizationAuthClient,
     {
       onSuccess: () => {
         onOpenChange(false)
-        toast.success(organizationLocalization.organizationDeleted)
+        toast.success(organizationLocalization!.organizationDeleted as string)
 
         navigate({
-          to: `${basePaths.settings}/${organizationPluginViewPaths.settings.organizations}`,
-          replace: true
+          to: "/project",
+          replace: true,
         })
-      }
+      },
     }
   )
 
@@ -74,11 +72,14 @@ export function DeleteOrganizationDialog({
             </AlertDialogMedia>
 
             <AlertDialogTitle>
-              {organizationLocalization.deleteOrganization}
+              {organizationLocalization!.deleteOrganization as string}
             </AlertDialogTitle>
 
             <AlertDialogDescription>
-              {organizationLocalization.deleteOrganizationDescription}
+              {
+                organizationLocalization!
+                  .deleteOrganizationDescription as string
+              }
             </AlertDialogDescription>
           </AlertDialogHeader>
 
@@ -96,7 +97,7 @@ export function DeleteOrganizationDialog({
             <Button type="submit" variant="destructive" disabled={isPending}>
               {isPending && <Spinner />}
 
-              {organizationLocalization.deleteOrganization}
+              {organizationLocalization!.deleteOrganization as string}
             </Button>
           </AlertDialogFooter>
         </form>

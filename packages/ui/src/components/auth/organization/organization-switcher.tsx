@@ -101,7 +101,7 @@ export function OrganizationSwitcher({
     } else if (slug !== undefined) {
       navigate({
         to: organization
-          ? `${basePaths.organization}/${organization.slug}/${organizationViewPaths.organization.settings}`
+          ? `${basePaths.organization}/${organization.slug}/${organizationViewPaths!.organization!.settings}`
           : `${basePaths.settings}/${viewPaths.settings.account}`,
       })
     } else {
@@ -134,7 +134,9 @@ export function OrganizationSwitcher({
               <OrganizationView
                 hideRole
                 hideSlug={hideSlug}
-                organization={{ name: organizationLocalization.organization }}
+                organization={{
+                  name: organizationLocalization!.organization as string,
+                }}
               />
             )}
             <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
@@ -162,15 +164,15 @@ export function OrganizationSwitcher({
                     <Link
                       href={
                         slug
-                          ? `${basePaths.organization}/${slug}/${organizationViewPaths.organization.settings}`
-                          : `${basePaths.organization}/${organizationViewPaths.organization.settings}`
+                          ? `${basePaths.organization}/${slug}/${organizationViewPaths!.organization!.settings}`
+                          : `${basePaths.organization}/${organizationViewPaths!.organization!.settings}`
                       }
                     />
                   }
                   nativeButton={false}
                 >
                   <SettingsIcon className="text-muted-foreground" />
-                  {organizationLocalization.manage}
+                  {organizationLocalization!.manage as string}
                 </Button>
               )}
             </div>
@@ -229,7 +231,7 @@ export function OrganizationSwitcher({
               >
                 <PlusCircle className="text-muted-foreground" />
 
-                {organizationLocalization.createOrganization}
+                {organizationLocalization!.createOrganization as ReactNode}
               </DropdownMenuItem>
             </>
           )}

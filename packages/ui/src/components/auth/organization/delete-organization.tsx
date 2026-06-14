@@ -48,11 +48,11 @@ export function DeleteOrganization() {
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p className="text-sm font-medium leading-tight">
-          {organizationLocalization.deleteOrganization}
+          {organizationLocalization!.deleteOrganization as string}
         </p>
 
         <p className="text-muted-foreground mt-0.5 text-xs">
-          {organizationLocalization.deleteOrganizationDescription}
+          {organizationLocalization!.deleteOrganizationDescription as string}
         </p>
       </div>
 
@@ -63,7 +63,7 @@ export function DeleteOrganization() {
         className="text-destructive"
         onClick={() => setConfirmOpen(true)}
       >
-        {organizationLocalization.deleteOrganization}
+        {organizationLocalization!.deleteOrganization as string}
       </Button>
 
       {activeOrganization && (

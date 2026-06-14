@@ -4,7 +4,7 @@ import {
   type OrganizationAuthClient,
   useAuth,
   useAuthPlugin,
-  useCreateOrganization
+  useCreateOrganization,
 } from "@better-auth-ui/react"
 import { Briefcase } from "lucide-react"
 import { type SyntheticEvent, useEffect, useState } from "react"
@@ -17,7 +17,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogMedia,
-  AlertDialogTitle
+  AlertDialogTitle,
 } from "@workspace/ui/components/alert-dialog"
 import { Button } from "@workspace/ui/components/button"
 import { Field, FieldError } from "@workspace/ui/components/field"
@@ -31,11 +31,17 @@ import { SlugField, sanitizeSlug } from "./slug-field"
 export type CreateOrganizationDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
+  /** Called with the newly created organization, in addition to the default close behavior. */
+  onSuccess?: (organization: { id: string; slug: string; name: string }) => void
+  /** Hide the cancel button — use when there's nothing to cancel back to (e.g. onboarding). */
+  hideCancel?: boolean
 }
 
 export function CreateOrganizationDialog({
   open,
-  onOpenChange
+  onOpenChange,
+  onSuccess,
+  hideCancel,
 }: CreateOrganizationDialogProps) {
   const { authClient, localization } = useAuth()
   const { localization: organizationLocalization } =
@@ -47,7 +53,20 @@ export function CreateOrganizationDialog({
 
   const { mutate: createOrganization, isPending: isCreating } =
     useCreateOrganization(authClient as OrganizationAuthClient, {
-      onSuccess: () => onOpenChange(false)
+      onSuccess: (org) => {
+        ;(
+          authClient as unknown as {
+            organization: {
+              setActive: (opts: { organizationId: string }) => Promise<unknown>
+            }
+          }
+        ).organization
+          .setActive({ organizationId: org.id })
+          .then(() => {
+            onOpenChange(false)
+            onSuccess?.(org)
+          })
+      },
     })
 
   const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
@@ -77,18 +96,18 @@ export function CreateOrganizationDialog({
             </AlertDialogMedia>
 
             <AlertDialogTitle>
-              {organizationLocalization.createOrganization}
+              {organizationLocalization?.createOrganization as string}
             </AlertDialogTitle>
 
             <AlertDialogDescription>
-              {organizationLocalization.organizationsDescription}
+              {organizationLocalization?.organizationsDescription as string}
             </AlertDialogDescription>
           </AlertDialogHeader>
 
           <div className="flex flex-col gap-4">
             <Field data-invalid={!!nameError}>
               <Label htmlFor="create-organization-name">
-                {organizationLocalization.name}
+                {organizationLocalization?.name as string}
               </Label>
 
               <Input
@@ -96,7 +115,9 @@ export function CreateOrganizationDialog({
                 name="name"
                 autoFocus
                 required
-                placeholder={organizationLocalization.namePlaceholder}
+                placeholder={
+                  organizationLocalization?.namePlaceholder as string
+                }
                 value={name}
                 onChange={(e) => {
                   setName(e.target.value)
@@ -122,14 +143,16 @@ export function CreateOrganizationDialog({
           </div>
 
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isCreating}>
-              {localization.settings.cancel}
-            </AlertDialogCancel>
+            {!hideCancel && (
+              <AlertDialogCancel disabled={isCreating}>
+                {localization.settings.cancel}
+              </AlertDialogCancel>
+            )}
 
             <Button type="submit" disabled={isCreating}>
               {isCreating && <Spinner />}
 
-              {organizationLocalization.createOrganization}
+              {organizationLocalization?.createOrganization as string}
             </Button>
           </AlertDialogFooter>
         </form>
