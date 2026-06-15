@@ -23,18 +23,19 @@ export type SwitchAccountSubmenuItemProps = {
 export function SwitchAccountSubmenuItem({
   deviceSession
 }: SwitchAccountSubmenuItemProps) {
+  console.log(deviceSession.session.userId)
   const { authClient } = useAuth()
   const { mutate: setActiveSession, isPending } = useSetActiveSession(
     authClient as MultiSessionAuthClient,
     {
-      onSuccess: () => window.scrollTo({ top: 0 })
+      onSuccess: () => window.location.href = "/project",
     }
   )
 
   return (
     <DropdownMenuItem
       disabled={isPending}
-      onSelect={() =>
+      onClick={() =>
         setActiveSession({ sessionToken: deviceSession.session.token })
       }
     >

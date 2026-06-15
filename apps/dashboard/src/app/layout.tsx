@@ -30,9 +30,8 @@ export default function RootLayout({
     >
       <body className="min-h-screen w-full bg-background font-sans text-foreground antialiased">
         <Providers>
-
-        <Toaster />
-        {children}
+          <Toaster />
+          {children}
         </Providers>
       </body>
     </html>

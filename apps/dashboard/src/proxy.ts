@@ -6,12 +6,13 @@ const publicRoutes = ["/"]
 const authRoutes = [
   "/auth/sign-in",
   "/auth/sign-up",
+  "/auth/sign-out",
   "/auth/forgot-password",
   "/auth/reset-password",
 ]
 
 export default async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const { pathname, searchParams } = request.nextUrl
 
   // Allow Better Auth API routes
   if (pathname.startsWith("/api/auth")) {
@@ -25,8 +26,15 @@ export default async function proxy(request: NextRequest) {
     headers: request.headers,
   })) as Session | null
 
-  // Authenticated users should not access auth routes
-  if (session && authRoutes.some((route) => pathname === route)) {
+  // Allow authenticated users to reach auth routes when adding a new account
+  const isAddingAccount = searchParams.get("addAccount") === "true"
+
+  // Authenticated users should not access auth routes — unless adding an account
+  if (
+    session &&
+    !isAddingAccount &&
+    authRoutes.some((route) => pathname === route)
+  ) {
     if (session.session.activeOrganizationSlug) {
       return NextResponse.redirect(
         new URL(
@@ -69,16 +77,32 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/auth/sign-in", request.url))
   }
 
-  // Authenticated users without an organization must complete onboarding
-  // before reaching any other protected route.
+  // Authenticated users with NO organizations must complete onboarding
   if (
     session &&
     !session.session.activeOrganizationSlug &&
+    session.organizations.length === 0 &&
     pathname !== "/onboarding" &&
     !authRoutes.includes(pathname) &&
     !publicRoutes.includes(pathname)
   ) {
     return NextResponse.redirect(new URL("/onboarding", request.url))
+  }
+
+  // Authenticated users WITH organizations but no active one — fall back to first org
+  if (
+    session &&
+    !session.session.activeOrganizationSlug &&
+    session.organizations.length > 0 &&
+    pathname !== "/project" &&
+    !pathname.startsWith("/project/") &&
+    pathname !== "/onboarding" &&
+    !authRoutes.includes(pathname) &&
+    !publicRoutes.includes(pathname)
+  ) {
+    return NextResponse.redirect(
+      new URL(`/project/${session.organizations[0].slug}/settings`, request.url)
+    )
   }
 
   return NextResponse.next()

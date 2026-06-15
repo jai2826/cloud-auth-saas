@@ -35,6 +35,7 @@ export type SignUpProps = {
   className?: string
   socialLayout?: SocialLayout
   socialPosition?: "top" | "bottom"
+  isAddingAccount?: boolean
 }
 
 /**
@@ -54,7 +55,8 @@ export type SignUpProps = {
 export function SignUp({
   className,
   socialLayout,
-  socialPosition = "bottom"
+  socialPosition = "bottom",
+  isAddingAccount = false
 }: SignUpProps) {
   const {
     additionalFields,
@@ -71,6 +73,7 @@ export function SignUp({
   } = useAuth()
 
   const { fetchOptions, resetFetchOptions } = useFetchOptions()
+const addAccountSuffix = isAddingAccount ? "?addAccount=true" : ""
 
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -86,7 +89,7 @@ export function SignUp({
       onSuccess: () => {
         if (emailAndPassword?.requireEmailVerification) {
           toast.success(localization.auth.verifyYourEmail)
-          navigate({ to: `${basePaths.auth}/${viewPaths.auth.signIn}` })
+          navigate({ to: `${basePaths.auth}/${viewPaths.auth.signIn}${addAccountSuffix}` })
         } else {
           navigate({ to: redirectTo })
         }
@@ -482,7 +485,7 @@ export function SignUp({
             <FieldDescription className="text-center">
               {localization.auth.alreadyHaveAnAccount}{" "}
               <Link
-                href={`${basePaths.auth}/${viewPaths.auth.signIn}`}
+                href={`${basePaths.auth}/${viewPaths.auth.signIn}${addAccountSuffix}`}
                 className="underline underline-offset-4"
               >
                 {localization.auth.signIn}

@@ -4,7 +4,8 @@
   "dependencies": {
     "@better-auth/api-key": "^1.6.15",
     "better-auth": "^1.6.15",
-    "pg": "^8.21.0"
+    "pg": "^8.21.0",
+    "@workspace/types": "workspace:*"
   },
   "devDependencies": {
     "@types/pg": "^8.20.0"

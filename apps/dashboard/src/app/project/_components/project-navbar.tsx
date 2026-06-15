@@ -18,11 +18,11 @@ import { PlusCircle, MenuIcon, BookOpenIcon, Settings2Icon } from "lucide-react"
 import Link from "next/link"
 import { useParams, usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
-
+import { UserButton } from "@workspace/ui/components/auth/user/user-button"
 
 const ProjectNavbar = () => {
   const router = useRouter()
-  const {slug} = useParams()
+  const { slug } = useParams()
   const navigationData = [
     {
       title: "Docs",
@@ -34,13 +34,8 @@ const ProjectNavbar = () => {
       href: `/project/${slug}/settings`,
       icon: Settings2Icon,
     },
-    {
-      title: "Settings",
-      href: `/project/${slug}/settings`,
-      icon: Settings2Icon,
-    },
   ]
-   
+
   const pathname = usePathname()
   // const { localization } = useAuth()
   const { localization: organizationLocalization } =
@@ -58,7 +53,7 @@ const ProjectNavbar = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-background/20 backdrop-blur-3xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 py-5 sm:px-6">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
         <div className="flex flex-1 items-center gap-8 font-medium text-muted-foreground md:justify-between lg:gap-16">
           <div className="flex items-center gap-6">
             <Link href="/project">
@@ -86,10 +81,11 @@ const ProjectNavbar = () => {
                 </Link>
               )
             })}
+            <UserButton />
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 md:gap-0">
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
@@ -110,7 +106,7 @@ const ProjectNavbar = () => {
                 />
 
                 <DropdownMenuItem onClick={() => setCreateOpen(true)}>
-                  <PlusCircle className="text-muted-foreground" />
+                  <PlusCircle className="mr-1 h-4 w-4 text-muted-foreground" />
                   {organizationLocalization?.createOrganization as string}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -118,6 +114,7 @@ const ProjectNavbar = () => {
               <DropdownMenuGroup>
                 {navigationData.map((item, index) => (
                   <DropdownMenuItem key={index}>
+                    {item.icon && <item.icon className="mr-1 h-4 w-4" />}
                     <a href={item.href}>{item.title}</a>
                   </DropdownMenuItem>
                 ))}

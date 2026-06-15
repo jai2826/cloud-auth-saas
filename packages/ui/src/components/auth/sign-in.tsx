@@ -31,6 +31,7 @@ export type SignInProps = {
   className?: string
   socialLayout?: SocialLayout
   socialPosition?: "top" | "bottom"
+  isAddingAccount?: boolean
 }
 
 /**
@@ -44,7 +45,8 @@ export type SignInProps = {
 export function SignIn({
   className,
   socialLayout,
-  socialPosition = "bottom"
+  socialPosition = "bottom",
+  isAddingAccount = false
 }: SignInProps) {
   const {
     authClient,
@@ -60,6 +62,7 @@ export function SignIn({
     Link
   } = useAuth()
 
+  const addAccountSuffix = isAddingAccount ? "?addAccount=true" : ""
   const { fetchOptions, resetFetchOptions } = useFetchOptions()
 
   const [password, setPassword] = useState("")
@@ -304,7 +307,7 @@ export function SignIn({
         <div className="flex flex-col gap-3 items-center w-full mt-4">
           {emailAndPassword?.forgotPassword && (
             <Link
-              href={`${basePaths.auth}/${viewPaths.auth.forgotPassword}`}
+              href={`${basePaths.auth}/${viewPaths.auth.forgotPassword}${addAccountSuffix}`}
               className="self-center text-sm underline-offset-4 hover:underline"
             >
               {localization.auth.forgotPasswordLink}
@@ -315,7 +318,7 @@ export function SignIn({
             <FieldDescription className="text-center">
               {localization.auth.needToCreateAnAccount}{" "}
               <Link
-                href={`${basePaths.auth}/${viewPaths.auth.signUp}`}
+                href={`${basePaths.auth}/${viewPaths.auth.signUp}${addAccountSuffix}`}
                 className="underline underline-offset-4"
               >
                 {localization.auth.signUp}

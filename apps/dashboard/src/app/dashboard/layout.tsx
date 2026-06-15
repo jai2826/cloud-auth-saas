@@ -10,7 +10,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="relative min-h-screen w-full bg-background text-foreground">
       <DashboardNavbar />
-      <PageShell className="py-6 sm:py-8">{children}</PageShell>
+      <PageShell className="py-4 sm:py-6">{children}</PageShell>
     </div>
   )
 }

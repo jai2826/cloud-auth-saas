@@ -3,23 +3,26 @@
 import {
   type MultiSessionAuthClient,
   useAuth,
+  useListDeviceSessions,
   useSession,
-  useSetActiveSession
+  useSetActiveSession,
+  useSignOut,
 } from "@better-auth-ui/react"
 import {
   ChevronsUpDown,
   LogIn,
   LogOut,
   Settings,
-  UserPlus2
+  UserPlus2,
 } from "lucide-react"
 import {
   type ComponentType,
   isValidElement,
   type ReactElement,
-  type ReactNode
+  type ReactNode,
 } from "react"
 
+import { asExtendedSession } from "@workspace/types/session"
 import { Button } from "@workspace/ui/components/button"
 import {
   DropdownMenu,
@@ -28,12 +31,12 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
+import { Spinner } from "@workspace/ui/components/spinner"
 import { cn } from "@workspace/ui/lib/utils"
 import { UserAvatar } from "./user-avatar"
 import { UserView } from "./user-view"
-
 /** Auth states a `UserButton` link can be visible in. */
 export type UserButtonLinkVisibility =
   | "authenticated"
@@ -84,7 +87,14 @@ function renderUserLink(
 
   const { label, href, icon, variant } = link
   return (
-    <DropdownMenuItem key={fallbackKey} variant={variant} render={<Link href={href} />}>{icon}{label}</DropdownMenuItem>
+    <DropdownMenuItem
+      key={fallbackKey}
+      variant={variant}
+      render={<Link href={href} />}
+    >
+      {icon}
+      {label}
+    </DropdownMenuItem>
   )
 }
 
@@ -110,15 +120,65 @@ export function UserButton({
   size = "default",
   variant = "ghost",
   links,
-  hideSettings = false
+  hideSettings = false,
 }: UserButtonProps) {
-  const { authClient, basePaths, viewPaths, localization, plugins, Link } =
-    useAuth()
+  const {
+    authClient,
+    basePaths,
+    viewPaths,
+    localization,
+    plugins,
+    navigate,
+    Link,
+  } = useAuth()
 
-  const { isPending: settingActiveSession } = useSetActiveSession(
-    authClient as MultiSessionAuthClient
-  )
+  const { isPending: settingActiveSession, mutate: setActiveSession } =
+  useSetActiveSession(authClient as MultiSessionAuthClient, {
+    onSuccess: (data) => {
+      if (!data) return
+      const extended = asExtendedSession(data)
+      const activeOrgSlug =
+        extended.session.activeOrganizationSlug ??
+        extended.organizations?.[0]?.slug
+      window.location.href = activeOrgSlug
+        ? `/project/${activeOrgSlug}/settings`
+        : "/project"
+    },
+  })
   const { data: session, isPending: sessionPending } = useSession(authClient)
+
+  const { data: deviceSessions } = useListDeviceSessions(
+    authClient as MultiSessionAuthClient,
+    { refetchOnMount: "always" }
+  )
+
+  const { mutate: signOut, isPending: isSigningOut } = useSignOut(authClient, {
+    onSuccess: () =>
+      navigate({
+        to: `${basePaths.auth}/${viewPaths.auth.signIn}`,
+        replace: true,
+      }),
+    onError: () =>
+      navigate({
+        to: `${basePaths.auth}/${viewPaths.auth.signIn}`,
+        replace: true,
+      }),
+  })
+
+  async function handleSignOut() {
+  const otherSession = deviceSessions?.find(
+    (d) => d.session.id !== session?.session.id
+  )
+
+  if (otherSession && session) {
+    await (authClient as MultiSessionAuthClient).multiSession.revoke({
+      sessionToken: session.session.token,
+    })
+    setActiveSession({ sessionToken: otherSession.session.token })
+  } else {
+    signOut()
+  }
+}
 
   const userLinks = links?.flatMap((link, index) => {
     if (!isValidElement(link)) {
@@ -136,34 +196,35 @@ export function UserButton({
           size === "icon" && "rounded-full",
           size === "icon" && className
         )}
-      >
-        {size === "icon" ? (
-          <UserAvatar />
-        ) : (
-          <Button
-            variant={variant}
-            className={cn("py-2.5 h-auto font-normal", className)}
-            size="lg"
-          >
-            {session || sessionPending || settingActiveSession ? (
-              <UserView isPending={!!settingActiveSession} />
-            ) : (
-              <>
-                <UserAvatar />
+        render={
+          size === "icon" ? (
+            <UserAvatar />
+          ) : (
+            <Button
+              variant={variant}
+              className={cn("h-auto py-2.5 font-normal", className)}
+              size="lg"
+            >
+              {session || sessionPending || settingActiveSession ? (
+                <UserView isPending={!!settingActiveSession} />
+              ) : (
+                <>
+                  <UserAvatar />
 
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  {localization.auth.account}
-                </div>
-              </>
-            )}
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    {localization.auth.account}
+                  </div>
+                </>
+              )}
 
-            <ChevronsUpDown className="ml-auto size-4" />
-          </Button>
-        )}
-      </DropdownMenuTrigger>
+              <ChevronsUpDown className="ml-auto size-4" />
+            </Button>
+          )
+        }
+      ></DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className="w-[--radix-dropdown-menu-trigger-width] min-w-40 md:min-w-56 max-w-[48svw]"
+        className="w-[--radix-dropdown-menu-trigger-width] max-w-[48svw] min-w-40 md:min-w-56"
         sideOffset={sideOffset}
         align={align}
         onCloseAutoFocus={(e) => e.preventDefault()}
@@ -185,7 +246,16 @@ export function UserButton({
             {userLinks}
 
             {!hideSettings && (
-              <DropdownMenuItem render={<Link href={`${basePaths.settings}/${viewPaths.settings.account}`} />}><Settings className="text-muted-foreground" />{localization.settings.settings}</DropdownMenuItem>
+              <DropdownMenuItem
+                render={
+                  <Link
+                    href={`${basePaths.settings}/${viewPaths.settings.account}`}
+                  />
+                }
+              >
+                <Settings className="text-muted-foreground" />
+                {localization.settings.settings}
+              </DropdownMenuItem>
             )}
 
             {plugins.flatMap((plugin) =>
@@ -196,15 +266,36 @@ export function UserButton({
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem render={<Link href={`${basePaths.auth}/${viewPaths.auth.signOut}`} />}><LogOut className="text-muted-foreground" />{localization.auth.signOut}</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignOut} disabled={isSigningOut}>
+              {isSigningOut ? (
+                <Spinner className="text-muted-foreground" />
+              ) : (
+                <LogOut className="text-muted-foreground" />
+              )}
+              {localization.auth.signOut}
+            </DropdownMenuItem>
           </>
         ) : (
           <>
             {userLinks}
 
-            <DropdownMenuItem render={<Link href={`${basePaths.auth}/${viewPaths.auth.signIn}`} />}><LogIn className="text-muted-foreground" />{localization.auth.signIn}</DropdownMenuItem>
+            <DropdownMenuItem
+              render={
+                <Link href={`${basePaths.auth}/${viewPaths.auth.signIn}`} />
+              }
+            >
+              <LogIn className="text-muted-foreground" />
+              {localization.auth.signIn}
+            </DropdownMenuItem>
 
-            <DropdownMenuItem render={<Link href={`${basePaths.auth}/${viewPaths.auth.signUp}`} />}><UserPlus2 className="text-muted-foreground" />{localization.auth.signUp}</DropdownMenuItem>
+            <DropdownMenuItem
+              render={
+                <Link href={`${basePaths.auth}/${viewPaths.auth.signUp}`} />
+              }
+            >
+              <UserPlus2 className="text-muted-foreground" />
+              {localization.auth.signUp}
+            </DropdownMenuItem>
 
             {plugins.flatMap((plugin) =>
               plugin.userMenuItems?.map((Item, index) => (

@@ -5,14 +5,14 @@ import {
   useAuth,
   useAuthPlugin,
   useListDeviceSessions,
-  useSession
+  useSession,
 } from "@better-auth-ui/react"
 import { Check, CirclePlus } from "lucide-react"
 import { UserView } from "@workspace/ui/components/auth/user/user-view"
 import {
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuSubContent
+  DropdownMenuSubContent,
 } from "@workspace/ui/components/dropdown-menu"
 import { multiSessionPlugin } from "@workspace/ui/lib/auth/multi-session-plugin"
 import { SwitchAccountSubmenuItem } from "./switch-account-submenu-item"
@@ -32,11 +32,15 @@ export function SwitchAccountSubmenuContent() {
     useAuthPlugin(multiSessionPlugin)
   const { data: session } = useSession(authClient)
   const { data: deviceSessions, isPending } = useListDeviceSessions(
-    authClient as MultiSessionAuthClient
+    authClient as MultiSessionAuthClient,
+    {
+      // Always refetch when the submenu opens so newly added accounts
+      // are immediately visible without a full page reload.
+      refetchOnMount: "always",
+    }
   )
-
   return (
-    <DropdownMenuSubContent className="min-w-48 md:min-w-56 max-w-[48svw]">
+    <DropdownMenuSubContent className="max-w-[48svw] min-w-48 md:min-w-56">
       <DropdownMenuItem>
         <UserView isPending={isPending} />
 
@@ -56,7 +60,16 @@ export function SwitchAccountSubmenuContent() {
 
       <DropdownMenuSeparator />
 
-      <DropdownMenuItem render={<Link href={`${basePaths.auth}/${viewPaths.auth.signIn}`} />}><CirclePlus className="text-muted-foreground" />{multiSessionLocalization.addAccount}</DropdownMenuItem>
+      <DropdownMenuItem
+        render={
+          <Link
+            href={`${basePaths.auth}/${viewPaths.auth.signIn}?addAccount=true`}
+          />
+        }
+      >
+        <CirclePlus className="text-muted-foreground" />
+        {multiSessionLocalization.addAccount}
+      </DropdownMenuItem>
     </DropdownMenuSubContent>
   )
 }

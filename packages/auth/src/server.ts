@@ -3,6 +3,7 @@ import { apiKey } from "@better-auth/api-key"
 import { betterAuth } from "better-auth"
 import { customSession, multiSession, organization } from "better-auth/plugins"
 import { pgPool } from "./lib/db"
+import { ExtendedSession } from "@workspace/types/session"
 
 export const auth = betterAuth({
   session: {
@@ -106,13 +107,7 @@ export const auth = betterAuth({
 export type Auth = typeof auth
 
 // Create a clean, exported type for your application to use elsewhere
-export type Session = Auth["$Infer"]["Session"] & {
-  session: {
-    activeOrganizationId?: string | null
-    activeOrganizationSlug?: string | null
-  }
-  organizations: Auth["$Infer"]["Organization"][]
-}
+export type Session = ExtendedSession
 
 export type User = Auth["$Infer"]["Session"]["user"]
 export type Project = Auth["$Infer"]["Organization"]

@@ -3,18 +3,23 @@
 import {
   useAuth,
   useFetchOptions,
-  useRequestPasswordReset
+  useRequestPasswordReset,
 } from "@better-auth-ui/react"
 import { type SyntheticEvent, useState } from "react"
 import { toast } from "sonner"
 
 import { Button } from "@workspace/ui/components/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card"
 import {
   Field,
   FieldDescription,
   FieldError,
-  FieldGroup
+  FieldGroup,
 } from "@workspace/ui/components/field"
 import { Input } from "@workspace/ui/components/input"
 import { Label } from "@workspace/ui/components/label"
@@ -23,6 +28,7 @@ import { cn } from "@workspace/ui/lib/utils"
 
 export type ForgotPasswordProps = {
   className?: string
+  isAddingAccount?: boolean
 }
 
 /**
@@ -34,7 +40,10 @@ export type ForgotPasswordProps = {
  * @param className - Optional additional CSS class names applied to the card
  * @returns The forgot-password form UI as a JSX element
  */
-export function ForgotPassword({ className }: ForgotPasswordProps) {
+export function ForgotPassword({
+  className,
+  isAddingAccount = false,
+}: ForgotPasswordProps) {
   const {
     authClient,
     baseURL,
@@ -42,9 +51,9 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
     localization,
     plugins,
     viewPaths,
-    Link
+    Link,
   } = useAuth()
-
+  const addAccountSuffix = isAddingAccount ? "?addAccount=true" : ""
   const { fetchOptions, resetFetchOptions } = useFetchOptions()
 
   const { mutate: requestPasswordReset, isPending } = useRequestPasswordReset(
@@ -53,7 +62,7 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
       onError: () => {
         resetFetchOptions()
       },
-      onSuccess: () => toast.success(localization.auth.passwordResetEmailSent)
+      onSuccess: () => toast.success(localization.auth.passwordResetEmailSent),
     }
   )
 
@@ -62,8 +71,8 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
     const formData = new FormData(e.currentTarget)
     requestPasswordReset({
       email: formData.get("email") as string,
-      redirectTo: `${baseURL}${basePaths.auth}/${viewPaths.auth.resetPassword}`,
-      fetchOptions
+      redirectTo: `${baseURL}${basePaths.auth}/${viewPaths.auth.resetPassword}${addAccountSuffix}`,
+      fetchOptions,
     })
   }
 
@@ -100,7 +109,7 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
                 onChange={() => {
                   setFieldErrors((prev) => ({
                     ...prev,
-                    email: undefined
+                    email: undefined,
                   }))
                 }}
                 onInvalid={(e) => {
@@ -112,7 +121,7 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
 
                   setFieldErrors((prev) => ({
                     ...prev,
-                    email: msg
+                    email: msg,
                   }))
                 }}
                 aria-invalid={!!fieldErrors.email}
@@ -133,11 +142,11 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
           </FieldGroup>
         </form>
 
-        <div className="flex flex-col gap-3 items-center w-full mt-4">
+        <div className="mt-4 flex w-full flex-col items-center gap-3">
           <FieldDescription className="text-center">
             {localization.auth.rememberYourPassword}{" "}
             <Link
-              href={`${basePaths.auth}/${viewPaths.auth.signIn}`}
+              href={`${basePaths.auth}/${viewPaths.auth.signIn}${addAccountSuffix}`}
               className="underline underline-offset-4"
             >
               {localization.auth.signIn}
