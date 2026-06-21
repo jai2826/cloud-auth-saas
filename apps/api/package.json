@@ -7,6 +7,7 @@
     "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
+    "@openfga/sdk": "^0.9.6",
     "@upstash/redis": "^1.38.0",
     "@workspace/auth": "workspace:*",
     "hono": "^4.12.23",
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260606.1",
+    "@types/node": "^20.19.42",
     "@types/pg": "^8.20.0",
     "better-auth": "^1.6.15",
     "typescript": "^5.9.3",

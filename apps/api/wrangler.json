@@ -1,29 +1,30 @@
 {
-  "name": "api",
-  "main": "src/index.ts",
-  "compatibility_date": "2025-01-01",
-  "compatibility_flags": ["nodejs_compat"],
-  "hyperdrive": [
-    {
+	"name": "api",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-01-01",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"hyperdrive": [
+		{
       "binding": "FGA_DB",
-      "id": "8510764bac9a4e82a197b1dee792fbd6",
-      "localConnectionString": "postgresql://postgres.vmnacpvoeynfrymtxhfk:HAGsV9wmBWapOCJz@aws-1-ap-south-1.pooler.supabase.com:6543/postgres"
-    }
-  ],
-
-  "observability": {
-    "enabled": false,
-    "head_sampling_rate": 1,
-    "logs": {
-      "enabled": true,
-      "head_sampling_rate": 1,
-      "persist": true,
-      "invocation_logs": true
-    },
-    "traces": {
-      "enabled": false,
-      "persist": true,
-      "head_sampling_rate": 1
-    }
-  }
+			"id": "0228008df3d8410388062b96191c821b",
+      "localConnectionString": "postgresql://postgres.lujayuvunrlqcngbpxle:tRB4UfPiVLWDfbn6@aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres"
+		}
+	],
+	"observability": {
+		"enabled": false,
+		"head_sampling_rate": 1,
+		"logs": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+			"persist": true,
+			"invocation_logs": true
+		},
+		"traces": {
+			"enabled": false,
+			"persist": true,
+			"head_sampling_rate": 1
+		}
+	}
 }

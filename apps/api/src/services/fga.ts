@@ -1,36 +1,68 @@
 // apps/api/src/services/fga.ts
-import { Pool } from "pg";
+import { OpenFgaClient } from '@openfga/sdk';
 
-export async function evaluateAccess(
-  pool: Pool,
-  tenantId: string,
-  action: string,
-  resource: string,
-  context: Record<string, any> = {}
-): Promise<boolean> {
-  const client = await pool.connect();
-  try {
-    // Look for exact resource match OR wildcard match
-    const resourceBase = resource.split(':')[0] + ':*';
-    
-    const query = `
-      SELECT conditions FROM fga_policies 
-      WHERE tenant_id = $1 
-      AND action = $2 
-      AND (resource = $3 OR resource = $4)
-    `;
-    const res = await client.query(query, [tenantId, action, resource, resourceBase]);
+export interface FgaCheckParams {
+  userId: string;
+  action: 'reader' | 'writer' | 'owner' | 'admin' | string; // Relations in OpenFGA
+  objectType: string;
+  objectId: string;
+}
 
-    for (const row of res.rows) {
-      const conditions = row.conditions || {};
-      if (Object.keys(conditions).length === 0) return true; // No constraints = Allow
-
-      // Logic check
-      const met = Object.entries(conditions).every(([key, val]) => context[key] === val);
-      if (met) return true;
-    }
-    return false;
-  } finally {
-    client.release();
+/**
+ * Initializes the OpenFGA client using runtime environment variables from the edge.
+ */
+function getFgaClient(env: any): OpenFgaClient {
+  if (!env.OPENFGA_API_URL || !env.OPENFGA_STORE_ID) {
+    throw new Error("Missing OpenFGA configurations in runtime environment bindings.");
   }
+  
+  return new OpenFgaClient({
+    apiUrl: env.OPENFGA_API_URL,
+    storeId: env.OPENFGA_STORE_ID,
+    authorizationModelId: env.OPENFGA_MODEL_ID, // Optional but highly recommended
+  });
+}
+
+/**
+ * Executes a definitive Zanzibar relationship check at the cloud edge.
+ */
+export async function checkPermission(
+  env: any,
+  params: FgaCheckParams
+): Promise<boolean> {
+  const fga = getFgaClient(env);
+
+  try {
+    const { allowed } = await fga.check({
+      user: `user:${params.userId}`,
+      relation: params.action,
+      object: `${params.objectType}:${params.objectId}`,
+    });
+
+    return allowed ?? false;
+  } catch (error) {
+    console.error("OpenFGA authorization check failed:", error);
+    // Fail closed for maximum security
+    return false;
+  }
+}
+
+/**
+ * Writes a relationship tuple when resources are created or roles are granted.
+ */
+export async function writeRelationship(
+  env: any,
+  userId: string,
+  relation: string,
+  objectType: string,
+  objectId: string
+) {
+  const fga = getFgaClient(env);
+  return await fga.write({
+    writes: [{
+      user: `user:${userId}`,
+      relation: relation,
+      object: `${objectType}:${objectId}`
+    }]
+  });
 }

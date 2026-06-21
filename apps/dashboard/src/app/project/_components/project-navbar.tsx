@@ -1,6 +1,5 @@
 "use client"
 import LogoConsole from "@/components/Logo"
-import { useAuth, useAuthPlugin } from "@workspace/ui/index"
 import { CreateOrganizationDialog } from "@workspace/ui/components/auth/organization/create-organization-dialog"
 import { OrganizationSwitcher } from "@workspace/ui/components/auth/organization/organization-switcher"
 import { Button } from "@workspace/ui/components/button"
@@ -12,13 +11,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
+import { useAuthPlugin } from "@workspace/ui/index"
 import { organizationPlugin } from "@workspace/ui/lib/auth/organization-plugin"
 
-import { PlusCircle, MenuIcon, BookOpenIcon, Settings2Icon } from "lucide-react"
+import { UserButton } from "@workspace/ui/components/auth/user/user-button"
+import {
+  BookOpenIcon,
+  LayoutDashboardIcon,
+  MenuIcon,
+  PlusCircle,
+  Settings2Icon,
+} from "lucide-react"
 import Link from "next/link"
 import { useParams, usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
-import { UserButton } from "@workspace/ui/components/auth/user/user-button"
+import { cn } from "@workspace/ui/lib/utils"
 
 const ProjectNavbar = () => {
   const router = useRouter()
@@ -34,18 +41,26 @@ const ProjectNavbar = () => {
       href: `/project/${slug}/settings`,
       icon: Settings2Icon,
     },
+    {
+      title: "Dashboard",
+      href: `/project/${slug}/dashboard`,
+      icon: LayoutDashboardIcon,
+    },
   ]
 
   const pathname = usePathname()
   // const { localization } = useAuth()
-  const { localization: organizationLocalization } =
-    useAuthPlugin(organizationPlugin)
+  // const { localization: organizationLocalization } =
+  //   useAuthPlugin(organizationPlugin)
 
   const [createOpen, setCreateOpen] = useState(false)
 
   const handleSetActive = (org: { slug: string } | null) => {
+
+    const currentRoute = pathname.split("/").at(-1)
+
     if (org) {
-      router.push(`/project/${org.slug}/settings`)
+      router.push(`/project/${org.slug}/${currentRoute}`)
     } else {
       router.push("/project")
     }
@@ -62,19 +77,23 @@ const ProjectNavbar = () => {
 
             {pathname !== "/project" && (
               <OrganizationSwitcher
-                className="hidden md:flex"
+                className="flex"
                 hidePersonal
                 setActive={handleSetActive}
               />
             )}
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 max-lg:hidden">
             {navigationData.map((item, index) => {
+              const isActive = pathname === item.href
               return (
                 <Link
                   key={index}
                   href={item.href}
-                  className="flex items-center hover:text-primary max-md:hidden"
+                  className={cn(
+                    "flex items-center hover:text-primary ",
+                    isActive && "text-primary"
+                  )}
                 >
                   {item.icon && <item.icon className="mr-2 h-4 w-4" />}
                   {item.title}
@@ -85,7 +104,7 @@ const ProjectNavbar = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-6 md:gap-0">
+        <div className="flex items-center gap-6 md:gap-0 lg:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
@@ -94,12 +113,14 @@ const ProjectNavbar = () => {
                   <span className="sr-only">Menu</span>
                 </Button>
               }
-              className="md:hidden"
+              
             ></DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
-              <DropdownMenuGroup>
-                <OrganizationSwitcher
-                  className="w-full justify-between"
+              {/* As of right now this is disabled */}
+              <DropdownMenuGroup >
+                <UserButton className="w-full"/>
+                {/* <OrganizationSwitcher
+                  className="w-full justify-between "
                   hidePersonal
                   hideCreate
                   setActive={handleSetActive}
@@ -108,7 +129,7 @@ const ProjectNavbar = () => {
                 <DropdownMenuItem onClick={() => setCreateOpen(true)}>
                   <PlusCircle className="mr-1 h-4 w-4 text-muted-foreground" />
                   {organizationLocalization?.createOrganization as string}
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>

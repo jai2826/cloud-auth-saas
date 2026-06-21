@@ -1,62 +1,93 @@
+// apps/api/src/routes/fga.ts
 import { Hono } from "hono"
-import { Pool } from "pg"
+import type { Pool } from "pg"
+import {
+  batchCheck,
+  check,
+  grant,
+  revoke,
+  type CheckRequest,
+  type GrantRequest,
+  type RevokeRequest
+} from "../lib/fga-engine"
 
 const fgaRouter = new Hono<{
   Bindings: { FGA_DB: { connectionString: string } }
-  Variables: { pool: Pool }
+  Variables: { pool: Pool; organizationId: string; apiKeyId: string }
 }>()
 
-// POST: Create a new policy
-fgaRouter.post("/save_policies", async (c) => {
+function isValidCheckRequest(body: unknown): body is CheckRequest {
+  if (!body || typeof body !== "object") return false
+  const b = body as Record<string, unknown>
+  return (
+    typeof b.objectType === "string" &&
+    typeof b.objectId === "string" &&
+    typeof b.relation === "string" &&
+    typeof b.subjectType === "string" &&
+    typeof b.subjectId === "string"
+  )
+}
+
+fgaRouter.post("/check", async (c) => {
   const pool = c.get("pool")
-  const { tenant_id, role, resource, action, conditions } = await c.req.json()
+  const organizationId = c.get("organizationId")
+  const body = await c.req.json().catch(() => null)
 
-  const query = `
-    INSERT INTO fga_policies (tenant_id, role, resource, action, conditions)
-    VALUES ($1, $2, $3, $4, $5)
-    RETURNING id;
-  `
-
-  const result = await pool.query(query, [
-    tenant_id,
-    role,
-    resource,
-    action,
-    JSON.stringify(conditions),
-  ])
-  return c.json({ id: result.rows[0].id }, 201)
-})
-
-// GET: Retrieve policies (supports optional filtering)
-fgaRouter.get("/policies", async (c) => {
-  const pool = c.get("pool")
-  const tenantId = c.req.query("tenant_id")
-
-  const query = tenantId
-    ? "SELECT * FROM fga_policies WHERE tenant_id = $1"
-    : "SELECT * FROM fga_policies"
-
-  const params = tenantId ? [tenantId] : []
-  const result = await pool.query(query, params)
-
-  return c.json(result.rows)
-})
-
-// DELETE: Remove a policy by ID
-fgaRouter.delete("/delete_policy/:id", async (c) => {
-  const pool = c.get("pool")
-  const id = c.req.param("id")
-
-  const result = await pool.query("DELETE FROM fga_policies WHERE id = $1", [
-    id,
-  ])
-
-  if (result.rowCount === 0) {
-    return c.json({ error: "Policy not found" }, 404)
+  if (!isValidCheckRequest(body)) {
+    return c.json({ error: "Invalid request body" }, 400)
   }
 
-  // FIX: Return empty body for 204
-  return c.body(null, 204)
+  const result = await check(pool, organizationId, body)
+  return c.json(result)
+})
+
+fgaRouter.post("/batch-check", async (c) => {
+  const pool = c.get("pool")
+  const organizationId = c.get("organizationId")
+  const body = await c.req.json().catch(() => null)
+
+  if (!body || typeof body !== "object" || !Array.isArray((body as any).checks)) {
+    return c.json({ error: "Invalid request body — expected { checks: [...] }" }, 400)
+  }
+
+  const checks = (body as { checks: unknown[] }).checks
+
+  if (!checks.every(isValidCheckRequest)) {
+    return c.json({ error: "One or more checks are invalid" }, 400)
+  }
+
+  const results = await batchCheck(pool, organizationId, checks as CheckRequest[])
+  return c.json({ results })
+})
+
+function isValidGrantRequest(body: unknown): body is GrantRequest {
+  return isValidCheckRequest(body)
+}
+
+fgaRouter.post("/grant", async (c) => {
+  const pool = c.get("pool")
+  const organizationId = c.get("organizationId")
+  const body = await c.req.json().catch(() => null)
+
+  if (!isValidGrantRequest(body)) {
+    return c.json({ error: "Invalid request body" }, 400)
+  }
+
+  await grant(pool, organizationId, body)
+  return c.json({ success: true }, 201)
+})
+
+fgaRouter.post("/revoke", async (c) => {
+  const pool = c.get("pool")
+  const organizationId = c.get("organizationId")
+  const body = await c.req.json().catch(() => null)
+
+  if (!isValidGrantRequest(body as RevokeRequest)) {
+    return c.json({ error: "Invalid request body" }, 400)
+  }
+
+  await revoke(pool, organizationId, body as RevokeRequest)
+  return c.json({ success: true })
 })
 
 export default fgaRouter
